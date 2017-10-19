@@ -1,0 +1,12 @@
+{
+	"name": "hoarde-shooter",
+	"authors": [
+		"Saurabh Totey"
+	],
+	"dependencies": {
+		"gfm": "~>6.2.12"
+	},
+	"description": "A game made to learn/test GFM.",
+	"copyright": "Copyright © 2017, Saurabh Totey",
+	"license": "MIT"
+}
