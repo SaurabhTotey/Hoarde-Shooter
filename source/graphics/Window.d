@@ -3,6 +3,8 @@ module graphics.Window;
 import std.experimental.logger;
 import gfm.logger;
 import gfm.sdl2;
+import graphics.views.View;
+import graphics.views.Menu;
 
 class Window{
 
@@ -11,6 +13,7 @@ class Window{
     SDL2Window window;
     SDL2Renderer renderer;
     __gshared bool isRunning;
+    View currentScreen;
 
     alias window this;
 
@@ -19,9 +22,8 @@ class Window{
         this.sdl = new SDL2(logger);
         this.window = new SDL2Window(this.sdl, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
         this.renderer = new SDL2Renderer(this.window, SDL_RENDERER_SOFTWARE);
-        this.window.setTitle("Saurabh Totey Demo");
-        this.clear();
-        this.renderer.present();
+        this.window.setTitle("Hoarde Shooter");
+        this.currentScreen = new Menu(this);
     }
 
     ~this(){
@@ -39,26 +41,30 @@ class Window{
     void run(){
         this.isRunning = true;
         while(!this.sdl.wasQuitRequested()){
+            this.clear();
             SDL_Event event;
             while(this.sdl.pollEvent(&event)){
                 switch(event.type){
-                    case SDL_WINDOWEVENT:{
-                        switch (event.window.event){
-                            case SDL_WINDOWEVENT_RESIZED:{
-                                this.clear();
-                                break;
-                            }
-                            default:break;
-                        }
-                        break;
-                    }
                     case SDL_KEYDOWN:{
                         this.handleKey(event.key.keysym);
+                        break;
+                    }
+                    case SDL_MOUSEMOTION:{
+                        this.handleMouseMovement();
+                        break;
+                    }
+                    case SDL_MOUSEBUTTONDOWN:{
+                        this.handleMouseClick(event.button.button);
+                        break;
+                    }
+                    case SDL_MOUSEBUTTONUP:{
+                        this.handleMouseRelease(event.button.button);
                         break;
                     }
                     default:break;
                 }
             }
+            this.currentScreen.draw(this.renderer);
             this.renderer.present();
         }
         this.isRunning = false;
@@ -83,6 +89,19 @@ class Window{
             }
             default:break;
         }
+        this.currentScreen.handleKey(key);
+    }
+
+    void handleMouseMovement(){
+        this.currentScreen.handleMouseMovement(this.sdl.mouse);
+    }
+
+    void handleMouseClick(ubyte button){
+        this.currentScreen.handleMouseClick(button, this.sdl.mouse);
+    }
+
+    void handleMouseRelease(ubyte button){
+        this.currentScreen.handleMouseClick(button, this.sdl.mouse);
     }
 
 }
