@@ -1,11 +1,13 @@
 module graphics.views.View;
 
 public import gfm.sdl2;
+public import graphics.views.components.Component;
 public import graphics.Window;
 
 abstract class View{
 
     Window window;
+    Component[] components;
 
     this(Window window){
         this.window = window;
