@@ -13,6 +13,7 @@ class Window{
     SDL2Window window;
     SDL2Renderer renderer;
     __gshared bool isRunning;
+    bool isFullscreen;
     View currentScreen;
 
     alias window this;
@@ -34,7 +35,7 @@ class Window{
 
     void clear(){
         this.renderer.setViewportFull();
-        this.renderer.setColor(0, 0, 0, 255);
+        this.renderer.setColor(0, 0, 0);
         this.renderer.clear();
     }
 
@@ -72,19 +73,13 @@ class Window{
 
     void handleKey(SDL_Keysym key){
         switch(key.sym){
-            case SDLK_RETURN:{
-                break;
-            }
-            case SDLK_UP:{
-                break;
-            }
-            case SDLK_DOWN:{
-                break;
-            }
-            case SDLK_LEFT:{
-                break;
-            }
-            case SDLK_RIGHT:{
+            case SDLK_F11:{
+                if(!isFullscreen){
+                    this.window.setFullscreenSetting(SDL_WINDOW_FULLSCREEN_DESKTOP);
+                }else{
+                    this.window.setFullscreenSetting(0);
+                }
+                this.isFullscreen = !this.isFullscreen;
                 break;
             }
             default:break;
@@ -101,7 +96,7 @@ class Window{
     }
 
     void handleMouseRelease(ubyte button){
-        this.currentScreen.handleMouseClick(button, this.sdl.mouse);
+        this.currentScreen.handleMouseRelease(button, this.sdl.mouse);
     }
 
 }
