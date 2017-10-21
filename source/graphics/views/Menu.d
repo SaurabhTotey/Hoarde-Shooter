@@ -1,7 +1,7 @@
 module graphics.views.Menu;
 
 import graphics.views.components.Button;
-import graphics.views.components.Text;
+import graphics.views.components.Label;
 import graphics.views.View;
 
 class Menu: View{
@@ -15,7 +15,7 @@ class Menu: View{
                 writeln("Button clicked.");
             }
         };
-        this.components ~= new Text(SDL_Point(20, 240), "This is a button", window.defaultFont);
+        this.components ~= new Label(SDL_Rect(20, 240, 600, 50), "This is a button", Font(Calligraphy.SpecialElite, this.window.ttf));
     }
 
     override void draw(SDL2Renderer renderer){
