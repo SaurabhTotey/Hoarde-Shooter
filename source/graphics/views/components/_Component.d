@@ -12,11 +12,7 @@ abstract class Component{
         this.location = location;
     }
 
-    void draw(SDL2Renderer renderer){
-        renderer.setColor(255, 255, 255);
-        renderer.drawRect(this.location.x, this.location.y, this.location.w, this.location.h);
-    }
-
+    void draw(SDL2Renderer renderer);
     void handleKey(SDL_Keysym key);
     void handleMouseMovement(SDL2Mouse mouse);
     void handleMouseClick(ubyte button, SDL2Mouse mouse);

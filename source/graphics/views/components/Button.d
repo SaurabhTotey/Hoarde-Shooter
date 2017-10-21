@@ -1,12 +1,11 @@
 module graphics.views.components.Button;
 
 import std.datetime;
-import gfm.sdl2;
 import graphics.views.components.Pane;
 
 abstract class Button: Pane{
 
-    immutable Duration expectReleaseIn = dur!"msecs"(750);
+    immutable Duration expectReleaseIn = dur!"msecs"(650);
     SysTime lastPressed;
 
     this(SDL_Rect location){

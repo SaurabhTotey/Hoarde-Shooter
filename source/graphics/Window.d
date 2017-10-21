@@ -12,6 +12,9 @@ class Window{
     SDL2 sdl;
     SDL2Window window;
     SDL2Renderer renderer;
+    SDLTTF sdlTTF;
+    SDLFont titleFont;
+    SDLFont defaultFont;
     __gshared bool isRunning;
     bool isFullscreen;
     View currentScreen;
@@ -23,6 +26,9 @@ class Window{
         this.sdl = new SDL2(logger);
         this.window = new SDL2Window(this.sdl, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
         this.renderer = new SDL2Renderer(this.window, SDL_RENDERER_SOFTWARE);
+        this.sdlTTF = new SDLTTF(this.sdl);
+        this.titleFont = new SDLFont(this.sdlTTF, "res/fonts/SpecialElite.ttf", this.window.getWidth() / 15);
+        this.defaultFont = new SDLFont(this.sdlTTF, "res/fonts/SpecialElite.ttf", this.window.getWidth() / 20);
         this.window.setTitle("Hoarde Shooter");
         this.currentScreen = new Menu(this);
     }
