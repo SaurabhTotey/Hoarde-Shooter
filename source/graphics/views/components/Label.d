@@ -18,18 +18,20 @@ class Label: Pane{
     }
 
     override void draw(SDL2Renderer renderer){
-        SDLFont literalFont = this.font.getFont(0);
+        SDLFont literalFont;
         int scaling;
-        for(int i = 1; literalFont.measureText(this.text).x < this.location.w && literalFont.measureText(this.text).y < this.location.h; i++){
+        do{
             literalFont.destroy();
-            literalFont = this.font.getFont(i);
-            scaling = i;
-        }
+            literalFont = this.font.getFont(scaling);
+            scaling++;
+        }while(literalFont.measureText(this.text).x < this.location.w && literalFont.measureText(this.text).y < this.location.h);
         literalFont.destroy();
         literalFont = this.font.getFont(scaling - 1);
+        SDL_Point fontSize = literalFont.measureText(this.text);
+        SDL_Point startingPoint = SDL_Point(this.location.x + (this.location.w - fontSize.x) / 2, this.location.y + (this.location.h - fontSize.y) / 2);
         SDL2Surface textAsSurface = literalFont.renderTextSolid(this.text, this.color);
         literalFont.destroy();
-        renderer.copy(scoped!SDL2Texture(renderer, textAsSurface), this.location.x, this.location.y);
+        renderer.copy(scoped!SDL2Texture(renderer, textAsSurface), startingPoint.x, startingPoint.y);
         textAsSurface.destroy();
     }
 

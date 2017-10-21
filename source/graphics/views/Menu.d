@@ -15,7 +15,7 @@ class Menu: View{
                 writeln("Button clicked.");
             }
         };
-        this.components ~= new Label(SDL_Rect(20, 240, 600, 50), "This is a button", Font(Calligraphy.SpecialElite, this.window.ttf));
+        this.components ~= new Label(SDL_Rect(20, 240, 600, 50), "This is a button", Font(Calligraphy.OpenSans, this.window.ttf));
     }
 
     override void draw(SDL2Renderer renderer){
