@@ -1,6 +1,7 @@
 module graphics.views.components.Component;
 
 public import gfm.sdl2;
+import graphics.views.components.Label;
 
 abstract class Component{
 
@@ -25,4 +26,8 @@ abstract class Component{
  */
 bool contains(SDL_Rect rectangle, SDL_Point point){
     return point.x >= rectangle.x && point.x <= rectangle.x + rectangle.w && point.y >= rectangle.y && point.y <= rectangle.y + rectangle.h;
+}
+
+Component makeTextOverlay(Component baseComponent, string textToOverlay, Font textFont, SDL_Color textColor = SDL_Color(0, 0, 0, 255)){
+    return new Label(baseComponent.location, textToOverlay, textFont, textColor);
 }
