@@ -16,7 +16,6 @@ abstract class View{
     }
 
     abstract void draw(SDL2Renderer renderer){
-        //TODO make it so that the components don't need to define pixel locations for their rectangles, but instead they define standardized coordinates
         this.components.each!(component => component.draw(renderer));
     }
 

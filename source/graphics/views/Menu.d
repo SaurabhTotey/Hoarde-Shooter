@@ -1,5 +1,6 @@
 module graphics.views.Menu;
 
+import std.conv;
 import graphics.views.components.Button;
 import graphics.views.components.Label;
 import graphics.views.View;
@@ -9,7 +10,9 @@ class Menu: View{
     this(Window window){
         super(window);
         this.components ~= new class Button{
-            this(){super(SDL_Rect(20, 240, 600, 50));}
+            this(){
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+            }
             override void action(){
                 import std.stdio;
                 writeln("Button clicked.");

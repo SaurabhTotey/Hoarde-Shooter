@@ -16,6 +16,8 @@ class Window{
     __gshared bool isRunning;
     bool isFullscreen;
     View currentScreen;
+    immutable int logicalX = 1600;
+    immutable int logicalY = 900;
 
     alias window this;
 
@@ -24,6 +26,7 @@ class Window{
         this.sdl = new SDL2(logger);
         this.window = new SDL2Window(this.sdl, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
         this.renderer = new SDL2Renderer(this.window, SDL_RENDERER_SOFTWARE);
+        this.renderer.setLogicalSize(this.logicalX, this.logicalY);
         this.ttf = new SDLTTF(this.sdl);
         this.window.setTitle("Hoarde Shooter");
         this.currentScreen = new Menu(this);
