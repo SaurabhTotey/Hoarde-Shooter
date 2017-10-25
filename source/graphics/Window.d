@@ -73,14 +73,15 @@ class Window{
     /**
      * Returns a rectangle that gets the area in the window that can be drawn to
      * Returns the area between the window's letterboxes
+     * TODO this doesn't work well
      */
     SDL_Rect getDrawableArea(){
         int x;
         int y;
         if(this.window.getWidth() / this.xAspect > this.window.getHeight() / this.yAspect){
-            x = (this.window.getWidth() - xAspect * this.window.getHeight() / yAspect) / 2;
+            x = this.logicalY / this.window.getHeight() * (this.window.getWidth() - xAspect * this.window.getHeight() / yAspect) / 2;
         }else{
-            y = (this.window.getHeight() - yAspect * this.window.getWidth() / xAspect) / 2;
+            y = this.logicalX / this.window.getWidth() * (this.window.getHeight() - yAspect * this.window.getWidth() / xAspect) / 2;
         }
         return SDL_Rect(x, y, this.logicalX, this.logicalY);
     }
