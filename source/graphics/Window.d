@@ -21,16 +21,19 @@ import graphics.views.Menu;
  */
 class Window{
 
-    Logger logger;                  ///The logger for all GFM activities; an SDL2 object requires some form of a logger
-    SDL2 sdl;                       ///The utility object that handles global SDL settings; is used to construct many of the other utility objects
-    SDL2Window window;              ///The actual window that this class represents; is derived from the sdl object
-    SDL2Renderer renderer;          ///The utility object for drawing to the screen of the window; is derived off of the window
-    SDLTTF ttf;                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
-    __gshared bool isRunning;       ///A thread global boolean that can be checked for whether the window is currently running or not
-    bool isFullscreen;              ///A boolean that just contains the state of whether the window is fullscreen or not
-    View currentScreen;             ///The current view of the window; defines what the screen of the window is for the most part
-    immutable int logicalX = 1600;  ///The logical x is the logical width of the screen; coordinates are defined using this number as the total screen width, and then they get scaled to the actual screen width; this logicalX in conjunction with the logicalY define the aspect ratio that defined components are displayed at
-    immutable int logicalY = 900;   ///The logical y is the logical height of the screen; coordinates are defined using this number as the total screen height, and then they get scaled to the actual screen height; this logicalY in conjunction with the logicalX define the aspect ratio that defined components are displayed at
+    Logger logger;                                  ///The logger for all GFM activities; an SDL2 object requires some form of a logger
+    SDL2 sdl;                                       ///The utility object that handles global SDL settings; is used to construct many of the other utility objects
+    SDL2Window window;                              ///The actual window that this class represents; is derived from the sdl object
+    SDL2Renderer renderer;                          ///The utility object for drawing to the screen of the window; is derived off of the window
+    SDLTTF ttf;                                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
+    __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
+    bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
+    View currentScreen;                             ///The current view of the window; defines what the screen of the window is for the most part
+    immutable int scaling = 100;                    ///How much to scale the xAspect or yAspect in order to define the logical coordinates
+    immutable int xAspect = 16;                     ///The aspect ratio in the x or horizontal dimension
+    immutable int yAspect = 9;                      ///The aspect ratio in the y or horizontal dimension
+    immutable int logicalX = scaling * xAspect;     ///The logical x is the logical width of the screen; coordinates are defined using this number as the total screen width, and then they get scaled to the actual screen width; this logicalX in conjunction with the logicalY define the aspect ratio that defined components are displayed at
+    immutable int logicalY = scaling * yAspect;     ///The logical y is the logical height of the screen; coordinates are defined using this number as the total screen height, and then they get scaled to the actual screen height; this logicalY in conjunction with the logicalX define the aspect ratio that defined components are displayed at
 
     alias window this;              ///Allows the window to be accessed as the actual SDL2Window that it represents
 
@@ -68,6 +71,21 @@ class Window{
     }
 
     /**
+     * Returns a rectangle that gets the area in the window that can be drawn to
+     * Returns the area between the window's letterboxes
+     */
+    SDL_Rect getDrawableArea(){
+        int x;
+        int y;
+        if(this.window.getWidth() / this.xAspect > this.window.getHeight() / this.yAspect){
+            x = (this.window.getWidth() - xAspect * this.window.getHeight() / yAspect) / 2;
+        }else{
+            y = (this.window.getHeight() - yAspect * this.window.getWidth() / xAspect) / 2;
+        }
+        return SDL_Rect(x, y, this.logicalX, this.logicalY);
+    }
+
+    /**
      * Clears the entire buffer (unseen screen) with just black
      * If clear and then renderer.present() were called, the screen would be entirely black
      */
@@ -75,6 +93,8 @@ class Window{
         this.renderer.setViewportFull();
         this.renderer.setColor(0, 0, 0);
         this.renderer.clear();
+        SDL_Rect drawableArea = this.getDrawableArea();
+        this.renderer.setViewport(drawableArea.x, drawableArea.y, drawableArea.w, drawableArea.h);
     }
 
     /**
@@ -83,6 +103,7 @@ class Window{
      * TODO center this affect so letterboxes happen on both sides
      */
     void clear(int r, int g, int b, int a = 255){
+        this.clear();
         this.renderer.setColor(r, g, b, a);
         this.renderer.fillRect(0, 0, this.logicalX, this.logicalY);
     }
