@@ -49,3 +49,11 @@ bool contains(SDL_Rect rectangle, SDL_Point point){
 Component makeTextOverlay(Component baseComponent, string textToOverlay, Font textFont, SDL_Color textColor = SDL_Color(0, 0, 0, 255)){
     return new Label(baseComponent.location, textToOverlay, textFont, textColor);
 }
+
+/**
+ * Returns an image which goes over a base component with the given base component and path to image
+ * The component returned by this method must be added to the view, as simply creating this component doesn't do anything
+ */
+Component makeImageOverlay(Component baseComponent, string pathToImage){
+    return null; //TODO implement this method
+}

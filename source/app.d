@@ -3,7 +3,7 @@
  * Where all the important objects and data are held
  * Also where the engine runs the game logic
  */
-module Main;
+module App;
 
 import std.typecons;
 import core.thread;

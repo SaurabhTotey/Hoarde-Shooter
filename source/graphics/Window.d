@@ -26,6 +26,7 @@ class Window{
     SDL2Window window;                              ///The actual window that this class represents; is derived from the sdl object
     SDL2Renderer renderer;                          ///The utility object for drawing to the screen of the window; is derived off of the window
     SDLTTF ttf;                                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
+    SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
     bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
     View currentScreen;                             ///The current view of the window; defines what the screen of the window is for the most part
@@ -53,6 +54,8 @@ class Window{
         this.renderer.setLogicalSize(this.logicalX, this.logicalY);
         //Uses the constructed sdl object to make a renderer for text that uses the True Type Font format
         this.ttf = new SDLTTF(this.sdl);
+        //Makes the utility object to allow the creation of images
+        this.imageCreator = new SDLImage(this.sdl);
         //Sets the window title as the title given to this constructor
         this.window.setTitle(title);
         //Sets the default view as a Menu

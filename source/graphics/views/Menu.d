@@ -5,8 +5,10 @@
 module graphics.views.Menu;
 
 import std.conv;
+import App;
 import graphics.views.components.Button;
 import graphics.views.components.Label;
+import graphics.views.Main;
 import graphics.views.View;
 
 /**
@@ -22,18 +24,16 @@ class Menu: View{
      */
     this(Window window){
         super(window);
-        int amtPressed;
         this.components ~= new class Button{
             this(){
                 super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
             }
             override void action(){
-                import std.stdio;
-                writeln("Button clicked: ", amtPressed);
-                amtPressed++;
+                mainGame = new GameState();
+                window.currentScreen = new Main(window);
             }
         };
-        this.components ~= this.components[0].makeTextOverlay("This is a button", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[0].makeTextOverlay("New Game", Font(Calligraphy.OpenSans, this.window.ttf));
     }
 
     /**
