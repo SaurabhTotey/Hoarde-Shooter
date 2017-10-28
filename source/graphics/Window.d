@@ -50,7 +50,7 @@ class Window{
         //Uses the constructed sdl object to make the window at the center of the screen with the given width and height that can be resized
         this.window = new SDL2Window(this.sdl, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
         //Uses the constructed window to get its renderer and set its logical size to correctly scale components as defined by the window's logicalX and logicalY
-        this.renderer = new SDL2Renderer(this.window, SDL_RENDERER_SOFTWARE);
+        this.renderer = new SDL2Renderer(this.window);
         this.renderer.setLogicalSize(this.logicalX, this.logicalY);
         //Uses the constructed sdl object to make a renderer for text that uses the True Type Font format
         this.ttf = new SDLTTF(this.sdl);

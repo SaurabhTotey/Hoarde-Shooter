@@ -5,7 +5,6 @@
  */
 module graphics.views.components.Image;
 
-import std.typecons;
 import graphics.views.components.Pane;
 
 /**
@@ -37,14 +36,13 @@ class Image: Pane{
      * Makes image such that it fills up entire area of the component's location
      */
     override void draw(SDL2Renderer renderer){
-        //Loads the original image in original resolution
+        //Loads the original image in original resolution and makes the surface into a texture
         SDL2Surface imageAsSurface = this.imageCreator.load(this.path);
-        //Creates a new correct resolution surface to hold the scaled image, and then blits the original image with the blitScaled method so the new correct resolution surface is filled with the scaled image
-        SDL2Surface scaledImage = new SDL2Surface(this.sdl, this.location.w, this.location.h, 32, 0, 0, 0, 0);
-        scaledImage.blitScaled(imageAsSurface, SDL_Rect(0, 0, imageAsSurface.width, imageAsSurface.height), SDL_Rect(0, 0, this.location.w, this.location.h));
-        //Renders a texturized version of the surface and then destroys the non-scoped objects so GFM doesn't complain
-        renderer.copy(scoped!SDL2Texture(renderer, scaledImage), this.location.x, this.location.y);
-        scaledImage.destroy();
+        SDL2Texture imageAsTexture = new SDL2Texture(renderer, imageAsSurface);
+        //Renders the texturized version of the surface with the correct scaling
+        renderer.copy(imageAsTexture, SDL_Rect(0, 0, imageAsTexture.width, imageAsTexture.height), this.location);
+        //Destroys loaded image texture and surface so GFM doesn't complain
+        imageAsTexture.destroy();
         imageAsSurface.destroy();
     }
 
