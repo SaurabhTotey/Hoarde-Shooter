@@ -9,6 +9,7 @@ module graphics.Window;
 import std.experimental.logger;
 import gfm.logger;
 import gfm.sdl2;
+import graphics.KeyMap;
 import graphics.views.View;
 import graphics.views.Menu;
 
@@ -164,7 +165,7 @@ class Window{
     void handleKey(SDL_Keysym key){
         switch(key.sym){
             //If the key is F11, toggle the window's fullscreen status
-            case SDLK_F11:{
+            case defaultKeyMap[Action.FULLSCREEN]:{
                 if(!isFullscreen){
                     this.window.setFullscreenSetting(SDL_WINDOW_FULLSCREEN_DESKTOP);
                 }else{

@@ -8,7 +8,7 @@ class Main: View{
 
     this(Window window){
         super(window);
-        this.components ~= new Image(SDL_Rect(775, 425, 50, 50), "res/images/DisgustingBunny.png", this.window.imageCreator, this.window.sdl);
+        this.components ~= new Image(SDL_Rect(750, 400, 100, 100), "res/images/DisgustingBunny.png", this.window.imageCreator, this.window.sdl);
     }
 
     override void draw(SDL2Renderer renderer){
