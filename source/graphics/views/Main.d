@@ -16,4 +16,26 @@ class Main: View{
         super.draw(renderer);
     }
 
+    override void handleKey(SDL_Keysym key){
+        switch(key.sym){
+            case SDLK_w:{
+                this.components[0].location.y -= 10;
+                break;
+            }
+            case SDLK_s:{
+                this.components[0].location.y += 10;
+                break;
+            }
+            case SDLK_a:{
+                this.components[0].location.x -= 10;
+                break;
+            }
+            case SDLK_d:{
+                this.components[0].location.x += 10;
+                break;
+            }
+            default: break;
+        }
+    }
+
 }
