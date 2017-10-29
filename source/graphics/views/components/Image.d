@@ -18,7 +18,7 @@ class Image: Pane{
     string path;            ///The file path to the image
     SDLImage imageCreator;  ///The utility object that creates the image
     SDL2 sdl;               ///The object that will allow creation of surfaces
-    int rotation;           ///How much the image should be rotated in degrees
+    double rotation;        ///How much the image should be rotated in degrees
 
     /**
      * The constructor for an image
@@ -27,7 +27,7 @@ class Image: Pane{
      * The size of the image is bounded by its rectangle location, and is stretched to fit
      * Ideally, the rectangle is always in the same proportions as the original image
      */
-    this(SDL_Rect location, string path, SDLImage imageCreator, SDL2 sdl, int rotation = 0){
+    this(SDL_Rect location, string path, SDLImage imageCreator, SDL2 sdl, double rotation = 0){
         super(location);
         this.path = path;
         this.imageCreator = imageCreator;
