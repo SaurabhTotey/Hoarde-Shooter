@@ -6,6 +6,8 @@
  */
 module graphics.Window;
 
+import std.conv;
+import std.datetime;
 import std.experimental.logger;
 import gfm.logger;
 import gfm.sdl2;
@@ -27,9 +29,10 @@ class Window{
     SDL2Renderer renderer;                          ///The utility object for drawing to the screen of the window; is derived off of the window
     SDLTTF ttf;                                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
     SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
+    View currentScreen;                             ///The current view of the window; defines what the screen of the window is for the most part
+    int framerate = 60;                             ///How many times per second the screen updates; is a max, not a guarantee; defaults to 60
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
     bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
-    View currentScreen;                             ///The current view of the window; defines what the screen of the window is for the most part
     immutable int scaling = 100;                    ///How much to scale the xAspect or yAspect in order to define the logical coordinates
     immutable int xAspect = 16;                     ///The aspect ratio in the x or horizontal dimension
     immutable int yAspect = 9;                      ///The aspect ratio in the y or horizontal dimension
@@ -121,6 +124,7 @@ class Window{
      */
     void run(){
         this.isRunning = true;  //Sets the state of the window to running
+        SysTime lastTickTime;   //The time of the last tick; is used for framerate calculations
         //Runs while a window quit hasn't been requested
         while(!this.sdl.wasQuitRequested()){
             //Clears the buffer
@@ -146,9 +150,11 @@ class Window{
             }
             //Handles the keyboard input at each tick
             this.handleKey(this.sdl.keyboard);
-            //Draws on the buffer based on what the current view defines and then switches buffers //TODO do framerate stuff here if Vsync is off; do separate from event handling
-            this.currentScreen.draw(this.renderer);
-            this.renderer.present();
+            //Draws on the buffer based on what the current view defines and then switches buffers; handles framerate if Vsync isn't enabled TODO test that framerate cap actually works
+            if(this.renderer.info.isVsyncEnabled || Clock.currTime >= lastTickTime + dur!("msecs")((1000.0 / this.framerate).to!int)){
+                this.currentScreen.draw(this.renderer);
+                this.renderer.present();
+            }
         }
         //Now that the window has stopped running because a quit was requested, marks the window as not running
         this.isRunning = false;
