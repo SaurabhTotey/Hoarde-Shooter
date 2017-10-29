@@ -5,6 +5,7 @@
  */
 module graphics.views.Main;
 
+import std.algorithm;
 import std.conv;
 import std.math;
 import App;
@@ -31,6 +32,7 @@ class Main: View{
      */
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
+        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x, entity.hitbox.y, entity.hitbox.w, entity.hitbox.h), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI).draw(renderer));
         super.draw(renderer);
     }
 
@@ -39,10 +41,18 @@ class Main: View{
      * This is how the user actually interacts with the game
      */
     override void handleKey(SDL2Keyboard keyboard){
-        if(keyboard.isPressed(SDLK_w)){}
-        if(keyboard.isPressed(SDLK_s)){}
-        if(keyboard.isPressed(SDLK_a)){}
-        if(keyboard.isPressed(SDLK_d)){}
+        if(keyboard.isPressed(SDLK_w)){
+            mainGame.adjustPlayerVelocity(0, -1);
+        }
+        if(keyboard.isPressed(SDLK_s)){
+            mainGame.adjustPlayerVelocity(0, 1);
+        }
+        if(keyboard.isPressed(SDLK_a)){
+            mainGame.adjustPlayerVelocity(-1, 0);
+        }
+        if(keyboard.isPressed(SDLK_d)){
+            mainGame.adjustPlayerVelocity(1, 0);
+        }
         super.handleKey(keyboard);
     }
 

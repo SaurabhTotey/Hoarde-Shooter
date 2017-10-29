@@ -21,6 +21,15 @@ abstract class Entity{
     string imagePath;                       ///The path to the image that would represent this entity
 
     /**
+     * Necessary constructor for any entity
+     * Takes in a hitbox and a max speed because all entities need those
+     */
+    this(Rectangle hitbox, int maxSpeed){
+        this.hitbox = hitbox;
+        this.maxSpeed = maxSpeed;
+    }
+
+    /**
      * Adds a number to one of either the x or y velocities
      * Ensures that the velocity stays under the maxSpeed cap
      */
@@ -28,7 +37,7 @@ abstract class Entity{
         static assert("xy".canFind(velocityComponent.toLower()));  //Ensures that velocityComponent is either 'x' or 'y'
         mixin("double* component = &this.componentVelocities." ~ velocityComponent.toLower().to!string ~ ";");  //In compile time, sets a pointer to the component based on the template parameter of velocityComponent
         *component += amountToAdd;  //In runtime, adds the amountToAdd given in the function to the pointer that was set in compile time
-        if(this.componentVelocities.length.to!int > this.maxSpeed){
+        if(this.componentVelocities.length > this.maxSpeed){
             this.componentVelocities = this.componentVelocities.normalized * this.maxSpeed; //Scales the componentVelocities so that they are compliant with the max speed
         }
     }
@@ -49,15 +58,16 @@ abstract class Entity{
  * Isn't just an SDL_Rect because SDL2 is needed for SDL_Rect, and a separation of graphics from logic was wanted
  */
 struct Rectangle{
-    int x;              ///The x coordinate of the top left vertex of the rectangle
-    int y;              ///The y coordinate of the top left vertex of the rectangle
-    int w;              ///The width of the rectangle
-    int h;              ///The height of the rectangle
-    double rotation;    ///The rotation of the rectangle in radians
+    int x;                  ///The x coordinate of the top left vertex of the rectangle
+    int y;                  ///The y coordinate of the top left vertex of the rectangle
+    int w;                  ///The width of the rectangle
+    int h;                  ///The height of the rectangle
+    double rotation = 0;    ///The rotation of the rectangle in radians
 }
 
 /**
  * Returns whether two rectangles contain any overlap
+ * TODO account for rotation
  */
 bool intersect(Rectangle first, Rectangle second){
     return first.x < second.x + second.w && first.x + first.w > second.x && first.y < second.y + second.h && first.h + first.y > second.y;

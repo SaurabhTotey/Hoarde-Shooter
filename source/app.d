@@ -5,9 +5,11 @@
  */
 module App;
 
+import std.algorithm;
 import std.typecons;
 import core.thread;
 import graphics.Window;
+import objects.Bunny;
 import objects.Entity;
 
 /**
@@ -18,18 +20,42 @@ import objects.Entity;
  */
 class GameState{
 
-    immutable int ticksPerSecond = 20;
-    Entity[] allEntities;
-    immutable int worldX;
-    immutable int worldY;
+    immutable int ticksPerSecond = 20;  ///How many times per second the game logic will update all objects
+    __gshared Entity[] allEntities;     ///All objects that exist within the world
+    __gshared bool isRunning;           ///Whether the game logic is running or not
+    immutable int worldX;               ///The world width
+    immutable int worldY;               ///The world height
 
+    /**
+     * Makes a game with the given world width and height
+     * Also initializes all basic game objects
+     */
     this(immutable int worldX, immutable int worldY){
         this.worldX = worldX;
         this.worldY = worldY;
+        this.allEntities ~= new Bunny(Rectangle(worldX / 2 - 100 / 2, worldY / 2 - 100 / 2, 100, 100));
     }
 
+    /**
+     * Runs the game logic
+     * Ensures that the timing and updating of game logic happens at the correct speed as defined by ticksPerSecond
+     */
     void run(){
+        this.isRunning = true;
+        while(this.isRunning){
+            this.allEntities.each!(entity => entity.tickAction());
+            //TODO limit speed
+        }
+        this.isRunning = false;
+    }
 
+    /**
+     * Adjusts the player's velocity by the given x and y amounts
+     * Can be called on other threads (most notably, the graphics thread)
+     */
+    __gshared void adjustPlayerVelocity(int xChange, int yChange){
+        this.allEntities[0].addToVelocity!'x'(xChange);
+        this.allEntities[0].addToVelocity!'y'(yChange);
     }
 
 }
