@@ -29,7 +29,7 @@ class Menu: View{
                 super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
             }
             override void action(){
-                mainGame = new GameState();
+                mainGame = new GameState(window.logicalX, window.logicalY);
                 window.currentScreen = new Main(window);
             }
         };

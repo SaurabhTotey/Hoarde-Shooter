@@ -8,6 +8,7 @@ module App;
 import std.typecons;
 import core.thread;
 import graphics.Window;
+import objects.Entity;
 
 /**
  * A storage class for the data of the game
@@ -16,6 +17,20 @@ import graphics.Window;
  * The graphics implementation draws the game based on the data in GameState
  */
 class GameState{
+
+    immutable int ticksPerSecond = 20;
+    Entity[] allEntities;
+    immutable int worldX;
+    immutable int worldY;
+
+    this(immutable int worldX, immutable int worldY){
+        this.worldX = worldX;
+        this.worldY = worldY;
+    }
+
+    void run(){
+
+    }
 
 }
 
