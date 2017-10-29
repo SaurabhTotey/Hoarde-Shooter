@@ -16,25 +16,18 @@ class Main: View{
         super.draw(renderer);
     }
 
-    override void handleKey(SDL_Keysym key){
-        switch(key.sym){
-            case SDLK_w:{
-                this.components[0].location.y -= 10;
-                break;
-            }
-            case SDLK_s:{
-                this.components[0].location.y += 10;
-                break;
-            }
-            case SDLK_a:{
-                this.components[0].location.x -= 10;
-                break;
-            }
-            case SDLK_d:{
-                this.components[0].location.x += 10;
-                break;
-            }
-            default: break;
+    override void handleKey(SDL2Keyboard keyboard){
+        if(keyboard.isPressed(SDLK_w)){
+            this.components[0].location.y -= 4;
+        }
+        if(keyboard.isPressed(SDLK_s)){
+            this.components[0].location.y += 4;
+        }
+        if(keyboard.isPressed(SDLK_a)){
+            this.components[0].location.x -= 4;
+        }
+        if(keyboard.isPressed(SDLK_d)){
+            this.components[0].location.x += 4;
         }
     }
 

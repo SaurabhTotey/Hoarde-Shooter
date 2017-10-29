@@ -129,10 +129,6 @@ class Window{
             SDL_Event event;
             while(this.sdl.pollEvent(&event)){
                 switch(event.type){
-                    case SDL_KEYDOWN:{
-                        this.handleKey(event.key.keysym);
-                        break;
-                    }
                     case SDL_MOUSEMOTION:{
                         this.handleMouseMovement();
                         break;
@@ -148,7 +144,9 @@ class Window{
                     default:break;
                 }
             }
-            //Draws on the buffer based on what the current view defines and then switches buffers //TODO do framerate stuff here if Vsync is off
+            //Handles the keyboard input at each tick
+            this.handleKey(this.sdl.keyboard);
+            //Draws on the buffer based on what the current view defines and then switches buffers //TODO do framerate stuff here if Vsync is off; do separate from event handling
             this.currentScreen.draw(this.renderer);
             this.renderer.present();
         }
@@ -157,25 +155,20 @@ class Window{
     }
 
     /**
-     * A method to handle any given key
+     * A method to handle keypresses
      * Any behaviour defined here is global
-     * Otherwise, the key is then passed on to the current view to handle the key
+     * Otherwise, the keyboard is then passed on to the current view to handle pressed keys
      */
-    void handleKey(SDL_Keysym key){
-        switch(key.sym){
-            //If the key is F11, toggle the window's fullscreen status
-            case SDLK_F11:{
-                if(!isFullscreen){
-                    this.window.setFullscreenSetting(SDL_WINDOW_FULLSCREEN_DESKTOP);
-                }else{
-                    this.window.setFullscreenSetting(0);
-                }
-                this.isFullscreen = !this.isFullscreen;
-                break;
+    void handleKey(SDL2Keyboard keyboard){
+        if(keyboard.testAndRelease(SDLK_F11)){
+            if(!isFullscreen){
+                this.window.setFullscreenSetting(SDL_WINDOW_FULLSCREEN_DESKTOP);
+            }else{
+                this.window.setFullscreenSetting(0);
             }
-            default:break;
+            this.isFullscreen = !this.isFullscreen;
         }
-        this.currentScreen.handleKey(key);
+        this.currentScreen.handleKey(keyboard);
     }
 
     /**

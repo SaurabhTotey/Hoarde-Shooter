@@ -27,7 +27,7 @@ class Pane: Component{
         renderer.fillRect(this.location.x, this.location.y, this.location.w, this.location.h);
     }
 
-    override void handleKey(SDL_Keysym key){}                           ///No key handling
+    override void handleKey(SDL2Keyboard keyboard){}                    ///No key handling
     override void handleMouseMovement(SDL2Mouse mouse){}                ///No mouse movement handling
     override void handleMouseClick(ubyte button, SDL2Mouse mouse){}     ///No mouse click handling
     override void handleMouseRelease(ubyte button, SDL2Mouse mouse){}   ///No mouse click release handling

@@ -46,11 +46,11 @@ abstract class View{
 
     /**
      * An event handler for what the view should do when a key is pressed
-     * Takes in the pressed key
+     * Takes in the keyboard
      * Default functionality is to just have the focused component handle they key
      */
-    void handleKey(SDL_Keysym key){
-        if(this.focusedComponent !is null) this.focusedComponent.handleKey(key);
+    void handleKey(SDL2Keyboard keyboard){
+        if(this.focusedComponent !is null) this.focusedComponent.handleKey(keyboard);
     }
 
     /**

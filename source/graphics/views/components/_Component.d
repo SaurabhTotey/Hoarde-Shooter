@@ -27,7 +27,7 @@ abstract class Component{
     }
 
     void draw(SDL2Renderer renderer);                       ///Components must define their appearance in the draw method
-    void handleKey(SDL_Keysym key);                         ///Components must define their behaviour for keypresses
+    void handleKey(SDL2Keyboard keyboard);                  ///Components must define their behaviour for keypresses
     void handleMouseMovement(SDL2Mouse mouse);              ///Components must define their behaviour for mouse movements
     void handleMouseClick(ubyte button, SDL2Mouse mouse);   ///Components must define their behaviour for mouse click
     void handleMouseRelease(ubyte button, SDL2Mouse mouse); ///Components must define their behaviour for mouse click releases
