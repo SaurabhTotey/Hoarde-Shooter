@@ -15,16 +15,17 @@ import gfm.math;
  */
 abstract class Entity{
 
+    string imagePath;                       ///The path to the image that would represent this entity
     Rectangle hitbox;                       ///The bounds for where this entity actually takes up space or exists within the world
     immutable int maxSpeed;                 ///The highest speed this entity can travel at; speed is the magnitude of the velocities
     Vector!(double, 2) componentVelocities; ///A velocity vector of an entity where the x component is the x velocity and the y component is the y velocity
-    string imagePath;                       ///The path to the image that would represent this entity
 
     /**
      * Necessary constructor for any entity
-     * Takes in a hitbox and a max speed because all entities need those
+     * Takes in a path for its representative image, a hitbox, and a max speed because all entities need those
      */
-    this(Rectangle hitbox, int maxSpeed){
+    this(string imagePath, Rectangle hitbox, int maxSpeed){
+        this.imagePath = imagePath;
         this.hitbox = hitbox;
         this.maxSpeed = maxSpeed;
         this.componentVelocities = 0;
@@ -33,6 +34,7 @@ abstract class Entity{
     /**
      * What the entity does every tick of the game
      * Default implementation is to move the entity based on its velocity
+     * Scales the velocity down to the maxSpeed if the velocity magnitude ever exceeds the max speed
      */
     void tickAction(){
         //Normalizes component velocities such that they become compliant with the max speed
