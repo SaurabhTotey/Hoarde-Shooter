@@ -47,6 +47,7 @@ class GameState{
         while(mainWindow.isRunning){
             while(this.isRunning){
                 if(Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.ticksPerSecond).to!int)){
+                    lastTickTime = Clock.currTime;
                     this.allEntities.each!(entity => entity.tickAction());
                     if(!mainWindow.isRunning) break;
                 }
