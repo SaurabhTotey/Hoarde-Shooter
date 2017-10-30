@@ -44,6 +44,7 @@ class GameState{
         this.isRunning = true;
         while(this.isRunning){
             this.allEntities.each!(entity => entity.tickAction());
+            this.isRunning = mainWindow.isRunning;
             //TODO limit speed
         }
         this.isRunning = false;
@@ -80,4 +81,7 @@ void main(){
         //Runs the window so that it actually starts working; method runs until window is closed; once method is done, thread stops and scope is left
         mainWindow.run();
     }).start();
+    //Waits for the game to exist and then runs it
+    while(mainGame is null){}
+    mainGame.run();
 }

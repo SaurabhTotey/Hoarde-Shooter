@@ -27,6 +27,7 @@ abstract class Entity{
     this(Rectangle hitbox, int maxSpeed){
         this.hitbox = hitbox;
         this.maxSpeed = maxSpeed;
+        this.componentVelocities = 0;
     }
 
     /**
