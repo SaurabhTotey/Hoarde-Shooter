@@ -6,7 +6,8 @@
 module App;
 
 import std.algorithm;
-import std.typecons;
+import std.conv;
+import std.datetime;
 import core.thread;
 import graphics.Window;
 import objects.Bunny;
@@ -42,11 +43,13 @@ class GameState{
      */
     void run(){
         this.isRunning = true;
+        SysTime lastTickTime;
         while(mainWindow.isRunning){
             while(this.isRunning){
-                this.allEntities.each!(entity => entity.tickAction());
-                if(!mainWindow.isRunning) break;
-                //TODO limit speed
+                if(Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.ticksPerSecond).to!int)){
+                    this.allEntities.each!(entity => entity.tickAction());
+                    if(!mainWindow.isRunning) break;
+                }
             }
         }
         this.isRunning = false;

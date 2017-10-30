@@ -151,7 +151,7 @@ class Window{
             //Handles the keyboard input at each tick
             this.handleKey(this.sdl.keyboard);
             //Draws on the buffer based on what the current view defines and then switches buffers; handles framerate if Vsync isn't enabled TODO test that framerate cap actually works
-            if(this.renderer.info.isVsyncEnabled || Clock.currTime >= lastTickTime + dur!("msecs")((1000.0 / this.framerate).to!int)){
+            if(this.renderer.info.isVsyncEnabled || Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.framerate).to!int)){
                 this.currentScreen.draw(this.renderer);
                 this.renderer.present();
             }
