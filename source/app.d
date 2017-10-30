@@ -42,10 +42,12 @@ class GameState{
      */
     void run(){
         this.isRunning = true;
-        while(this.isRunning){
-            this.allEntities.each!(entity => entity.tickAction());
-            this.isRunning = mainWindow.isRunning;
-            //TODO limit speed
+        while(mainWindow.isRunning){
+            while(this.isRunning){
+                this.allEntities.each!(entity => entity.tickAction());
+                if(!mainWindow.isRunning) break;
+                //TODO limit speed
+            }
         }
         this.isRunning = false;
     }

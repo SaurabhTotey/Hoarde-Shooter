@@ -53,6 +53,10 @@ class Main: View{
         if(keyboard.isPressed(SDLK_d)){
             mainGame.adjustPlayerVelocity(0.0 + this.window.logicalX / this.window.logicalY, 0);
         }
+        if(keyboard.testAndRelease(SDLK_ESCAPE)){
+            mainGame.isRunning = !mainGame.isRunning;
+            //TODO handle pause procedure here
+        }
         super.handleKey(keyboard);
     }
 
