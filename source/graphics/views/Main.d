@@ -48,10 +48,10 @@ class Main: View{
             mainGame.adjustPlayerVelocity(0, 1);
         }
         if(keyboard.isPressed(SDLK_a)){
-            mainGame.adjustPlayerVelocity(-1, 0);
+            mainGame.adjustPlayerVelocity(0.0 - this.window.logicalX / this.window.logicalY, 0);
         }
         if(keyboard.isPressed(SDLK_d)){
-            mainGame.adjustPlayerVelocity(1, 0);
+            mainGame.adjustPlayerVelocity(0.0 + this.window.logicalX / this.window.logicalY, 0);
         }
         super.handleKey(keyboard);
     }

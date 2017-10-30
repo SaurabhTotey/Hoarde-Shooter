@@ -31,23 +31,14 @@ abstract class Entity{
     }
 
     /**
-     * Adds a number to one of either the x or y velocities
-     * Ensures that the velocity stays under the maxSpeed cap
-     */
-    void addToVelocity(char velocityComponent)(double amountToAdd){
-        static assert("xy".canFind(velocityComponent.toLower()));  //Ensures that velocityComponent is either 'x' or 'y'
-        mixin("double* component = &this.componentVelocities." ~ velocityComponent.toLower().to!string ~ ";");  //In compile time, sets a pointer to the component based on the template parameter of velocityComponent
-        *component += amountToAdd;  //In runtime, adds the amountToAdd given in the function to the pointer that was set in compile time
-        if(this.componentVelocities.length > this.maxSpeed){
-            this.componentVelocities = this.componentVelocities.normalized * this.maxSpeed; //Scales the componentVelocities so that they are compliant with the max speed
-        }
-    }
-
-    /**
      * What the entity does every tick of the game
      * Default implementation is to move the entity based on its velocity
      */
     void tickAction(){
+        //Normalizes component velocities such that they become compliant with the max speed
+        if(this.componentVelocities.length > this.maxSpeed){
+            this.componentVelocities = this.componentVelocities.normalized * this.maxSpeed;
+        }
         this.hitbox.x += this.componentVelocities.x.to!int;
         this.hitbox.y += this.componentVelocities.y.to!int;
     }

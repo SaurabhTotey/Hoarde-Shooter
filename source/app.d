@@ -54,9 +54,9 @@ class GameState{
      * Adjusts the player's velocity by the given x and y amounts
      * Can be called on other threads (most notably, the graphics thread)
      */
-    __gshared void adjustPlayerVelocity(int xChange, int yChange){
-        this.allEntities[0].addToVelocity!'x'(xChange);
-        this.allEntities[0].addToVelocity!'y'(yChange);
+    __gshared void adjustPlayerVelocity(double xChange, double yChange){
+        this.allEntities[0].componentVelocities.x += xChange;
+        this.allEntities[0].componentVelocities.y += yChange;
     }
 
 }
