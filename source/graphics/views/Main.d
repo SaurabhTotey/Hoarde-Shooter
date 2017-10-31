@@ -9,7 +9,10 @@ import std.algorithm;
 import std.conv;
 import std.math;
 import App;
+import graphics.views.components.Button;
 import graphics.views.components.Image;
+import graphics.views.components.Label;
+import graphics.views.Menu;
 import graphics.views.View;
 
 /**
@@ -18,6 +21,8 @@ import graphics.views.View;
  */
 class Main: View{
 
+    Component[] pauseScreenComponents;  ///The components that will appear when the game is paused
+
     /**
      * Given the window, makes the main view
      * Adds the image components to itself for ready drawing
@@ -25,6 +30,40 @@ class Main: View{
      */
     this(Window window){
         super(window);
+        //Defines pause screen buttons
+        this.pauseScreenComponents ~= [
+            new class Button{
+                this(){
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.3 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                }
+                override void action(){
+                    components = null;
+                    mainGame.isRunning = true;
+                }
+            },
+            new class Button{
+                this(){
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                }
+                override void action(){
+                    //TODO open config settings?
+                }
+            },
+            new class Button{
+                this(){
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                }
+                override void action(){
+                    window.currentScreen = new Menu(window);
+                    //TODO quit better
+                }
+            }
+        ];
+        //Labels the pause screen buttons
+        string[] buttonLabels = ["Resume", "Config", "Exit Game"];
+        foreach(i; 0..3){
+            pauseScreenComponents ~= pauseScreenComponents[i].makeTextOverlay(buttonLabels[i], Font(Calligraphy.OpenSans, this.window.ttf));
+        }
     }
 
     /**
@@ -33,6 +72,7 @@ class Main: View{
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
         mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x, entity.hitbox.y, entity.hitbox.w, entity.hitbox.h), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI).draw(renderer));
+        renderer.setColor(150, 150, 150);
         super.draw(renderer);
     }
 
@@ -41,21 +81,23 @@ class Main: View{
      * This is how the user actually interacts with the game
      */
     override void handleKey(SDL2Keyboard keyboard){
-        if(keyboard.isPressed(SDLK_w)){
-            mainGame.adjustPlayerVelocity(0, -1);
-        }
-        if(keyboard.isPressed(SDLK_s)){
-            mainGame.adjustPlayerVelocity(0, 1);
-        }
-        if(keyboard.isPressed(SDLK_a)){
-            mainGame.adjustPlayerVelocity(0.0 - this.window.logicalX / this.window.logicalY, 0);
-        }
-        if(keyboard.isPressed(SDLK_d)){
-            mainGame.adjustPlayerVelocity(0.0 + this.window.logicalX / this.window.logicalY, 0);
+        if(mainGame.isRunning){
+            if(keyboard.isPressed(SDLK_w)){
+                mainGame.adjustPlayerVelocity(0, -1);
+            }
+            if(keyboard.isPressed(SDLK_s)){
+                mainGame.adjustPlayerVelocity(0, 1);
+            }
+            if(keyboard.isPressed(SDLK_a)){
+                mainGame.adjustPlayerVelocity(0.0 - this.window.logicalX / this.window.logicalY, 0);
+            }
+            if(keyboard.isPressed(SDLK_d)){
+                mainGame.adjustPlayerVelocity(0.0 + this.window.logicalX / this.window.logicalY, 0);
+            }
         }
         if(keyboard.testAndRelease(SDLK_ESCAPE)){
             mainGame.isRunning = !mainGame.isRunning;
-            //TODO handle pause procedure here
+            this.components = (mainGame.isRunning)? null : this.pauseScreenComponents;
         }
         super.handleKey(keyboard);
     }
