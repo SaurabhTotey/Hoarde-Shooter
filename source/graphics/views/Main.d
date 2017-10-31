@@ -54,8 +54,9 @@ class Main: View{
                     super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
                 }
                 override void action(){
+                    mainGame.destroy();
+                    mainGame = null;
                     window.currentScreen = new Menu(window);
-                    //TODO quit better
                 }
             }
         ];

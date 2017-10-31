@@ -38,13 +38,20 @@ class GameState{
     }
 
     /**
+     * Destroys all contained game entities once the game is over
+     */
+    ~this(){
+        this.allEntities.destroy();
+    }
+
+    /**
      * Runs the game logic
      * Ensures that the timing and updating of game logic happens at the correct speed as defined by ticksPerSecond
      */
     void run(){
         this.isRunning = true;
         SysTime lastTickTime;
-        while(mainWindow.isRunning){
+        while(mainWindow.isRunning && mainGame !is null){
             while(this.isRunning){
                 if(Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.ticksPerSecond).to!int)){
                     lastTickTime = Clock.currTime;
@@ -87,7 +94,11 @@ void main(){
         //Runs the window so that it actually starts working; method runs until window is closed; once method is done, thread stops and scope is left
         mainWindow.run();
     }).start();
-    //Waits for the game to exist and then runs it
-    while(mainGame is null){}
-    mainGame.run();
+    //Waits for the game and window to exist and then runs the game
+    while(!mainWindow.isRunning){}
+    while(mainWindow.isRunning){
+        if(mainGame !is null){
+            mainGame.run();
+        }
+    }
 }
