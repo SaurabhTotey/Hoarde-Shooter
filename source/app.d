@@ -8,8 +8,10 @@ module App;
 import std.algorithm;
 import std.conv;
 import std.datetime;
+import std.math;
 import core.thread;
 import graphics.Window;
+import objects.Bullet;
 import objects.Bunny;
 import objects.Entity;
 
@@ -24,6 +26,7 @@ class GameState{
     immutable int ticksPerSecond = 20;  ///How many times per second the game logic will update all objects
     __gshared Entity[] allEntities;     ///All objects that exist within the world
     __gshared bool isRunning;           ///Whether the game logic is running or not
+    long numTicks;                      ///How many gameticks have passed in the game
     immutable int worldX;               ///The world width
     immutable int worldY;               ///The world height
 
@@ -56,6 +59,7 @@ class GameState{
                 if(Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.ticksPerSecond).to!int)){
                     lastTickTime = Clock.currTime;
                     this.allEntities.each!(entity => entity.tickAction());
+                    this.numTicks++;
                     if(!mainWindow.isRunning) break;
                 }
             }
@@ -65,11 +69,21 @@ class GameState{
 
     /**
      * Adjusts the player's velocity by the given x and y amounts
-     * Can be called on other threads (most notably, the graphics thread)
+     * Can be called on from other threads (most notably, the graphics thread)
      */
     __gshared void adjustPlayerVelocity(double xChange, double yChange){
         this.allEntities[0].componentVelocities.x += xChange;
         this.allEntities[0].componentVelocities.y += yChange;
+    }
+
+    /**
+     * Shoots a bullet from the player's location towards the given point
+     * Can be called on from other threads (most notably, the graphics thread)
+     */
+    __gshared void shootBulletTowards(int towardsX, int towardsY){
+        double playerX = this.allEntities[0].hitbox.x;
+        double playerY = this.allEntities[0].hitbox.y;
+        this.allEntities ~= new Bullet(playerX.to!int, playerY.to!int, atan2(towardsY - playerY, towardsX - playerX));
     }
 
 }

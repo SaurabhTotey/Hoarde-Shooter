@@ -72,7 +72,7 @@ class Main: View{
      */
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
-        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x.to!int, entity.hitbox.y.to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI).draw(renderer));
+        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x.to!int, entity.hitbox.y.to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI + 90).draw(renderer));
         renderer.setColor(150, 150, 150);
         super.draw(renderer);
     }
@@ -115,6 +115,7 @@ class Main: View{
      * TODO
      */
     override void handleMouseClick(ubyte button, SDL2Mouse mouse){
+        mainGame.shootBulletTowards(mouse.x, mouse.y);
         super.handleMouseClick(button, mouse);
     }
 
