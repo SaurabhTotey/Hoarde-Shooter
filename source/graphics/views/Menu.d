@@ -24,6 +24,7 @@ class Menu: View{
      */
     this(Window window){
         super(window);
+        //Adds a new game button in the center of the screen
         this.components ~= new class Button{
             this(){
                 super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
@@ -34,6 +35,16 @@ class Menu: View{
             }
         };
         this.components ~= this.components[0].makeTextOverlay("New Game", Font(Calligraphy.OpenSans, this.window.ttf));
+        //Adds a quit button in the bottom of the screen
+        this.components ~= new class Button{
+            this(){
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+            }
+            override void action(){
+                window.isRunning = false;
+            }
+        };
+        this.components ~= this.components[2].makeTextOverlay("Exit", Font(Calligraphy.OpenSans, this.window.ttf));
     }
 
     /**
