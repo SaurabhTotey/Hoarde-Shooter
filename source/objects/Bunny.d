@@ -14,10 +14,10 @@ class Bunny: Entity{
 
     /**
      * Creates a bunny given an initial hitbox
-     * Bunnies always have a maximum velocity of 15
+     * Bunnies always have a maximum velocity of 25
      */
     this(Rectangle hitbox){
-        super("res/images/DisgustingBunny.png", hitbox, 15);
+        super("res/images/DisgustingBunny.png", hitbox, 25);
     }
 
     /**

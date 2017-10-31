@@ -71,7 +71,7 @@ class Main: View{
      */
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
-        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x, entity.hitbox.y, entity.hitbox.w, entity.hitbox.h), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI).draw(renderer));
+        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x.to!int, entity.hitbox.y.to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI).draw(renderer));
         renderer.setColor(150, 150, 150);
         super.draw(renderer);
     }
@@ -82,17 +82,18 @@ class Main: View{
      */
     override void handleKey(SDL2Keyboard keyboard){
         if(mainGame.isRunning){
+            double scaling = 5.0;
             if(keyboard.isPressed(SDLK_w)){
-                mainGame.adjustPlayerVelocity(0, -1);
+                mainGame.adjustPlayerVelocity(0, -scaling);
             }
             if(keyboard.isPressed(SDLK_s)){
-                mainGame.adjustPlayerVelocity(0, 1);
+                mainGame.adjustPlayerVelocity(0, scaling);
             }
             if(keyboard.isPressed(SDLK_a)){
-                mainGame.adjustPlayerVelocity(0.0 - this.window.logicalX / this.window.logicalY, 0);
+                mainGame.adjustPlayerVelocity(-scaling * this.window.logicalX / this.window.logicalY, 0);
             }
             if(keyboard.isPressed(SDLK_d)){
-                mainGame.adjustPlayerVelocity(0.0 + this.window.logicalX / this.window.logicalY, 0);
+                mainGame.adjustPlayerVelocity(scaling * this.window.logicalX / this.window.logicalY, 0);
             }
         }
         if(keyboard.testAndRelease(SDLK_ESCAPE)){

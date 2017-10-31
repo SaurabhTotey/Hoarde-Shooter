@@ -5,7 +5,6 @@
 module objects.Entity;
 
 import std.algorithm;
-import std.conv;
 import std.string;
 import gfm.math;
 
@@ -41,8 +40,8 @@ abstract class Entity{
         if(this.componentVelocities.length > this.maxSpeed){
             this.componentVelocities = this.componentVelocities.normalized * this.maxSpeed;
         }
-        this.hitbox.x += this.componentVelocities.x.to!int;
-        this.hitbox.y += this.componentVelocities.y.to!int;
+        this.hitbox.x += this.componentVelocities.x;
+        this.hitbox.y += this.componentVelocities.y;
     }
 
 }
@@ -52,10 +51,10 @@ abstract class Entity{
  * Isn't just an SDL_Rect because SDL2 is needed for SDL_Rect, and a separation of graphics from logic was wanted
  */
 struct Rectangle{
-    int x;                  ///The x coordinate of the top left vertex of the rectangle
-    int y;                  ///The y coordinate of the top left vertex of the rectangle
-    int w;                  ///The width of the rectangle
-    int h;                  ///The height of the rectangle
+    double x;               ///The x coordinate of the top left vertex of the rectangle
+    double y;               ///The y coordinate of the top left vertex of the rectangle
+    double w;               ///The width of the rectangle
+    double h;               ///The height of the rectangle
     double rotation = 0;    ///The rotation of the rectangle in radians
 }
 
