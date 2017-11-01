@@ -43,10 +43,10 @@ class Window{
 
     /**
      * A constructor for a window
-     * Takes in a title as well as a width and a height, but if none are given, it assumes a resolution of 640x480
+     * Takes in a title and a path to its icon as well as a width and a height, but if none are given, it assumes a resolution of 640x480
      * Sets up all of the window's main fields and utility objects
      */
-    this(string title, int width = 640, int height = 480){
+    this(string title, string pathToIcon = null, int width = 640, int height = 480){
         //Constructs a ConsoleLogger and sets up the sdl object of the window
         this.logger = new ConsoleLogger();
         this.sdl = new SDL2(logger);
@@ -59,6 +59,12 @@ class Window{
         this.ttf = new SDLTTF(this.sdl);
         //Makes the utility object to allow the creation of images
         this.imageCreator = new SDLImage(this.sdl);
+        //Sets the icon of the window if a path to an icon was provided
+        if(pathToIcon !is null){
+            SDL2Surface iconSurface = this.imageCreator.load(pathToIcon);
+            this.window.setIcon(iconSurface);
+            iconSurface.destroy();
+        }
         //Sets the window title as the title given to this constructor
         this.window.setTitle(title);
         //Sets the default view as a Menu

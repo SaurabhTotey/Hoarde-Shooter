@@ -100,7 +100,7 @@ void main(){
     //Creates and starts a new thread for all graphics processes
     new Thread({
         //Makes a new window inside of this thread, but stores it in the global __gshared mainWindow variable so data is accessible everywhere
-        mainWindow = new Window("Hoarde Shooter");
+        mainWindow = new Window("Hoarde Shooter", "res/images/DisgustingBunny.png");
         //Defines that as soon as the thread stops running and the scope is left, the mainWindow is to be destroyed
         scope(exit){
             mainWindow.destroy();
