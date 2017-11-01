@@ -115,7 +115,9 @@ class Main: View{
      * TODO
      */
     override void handleMouseClick(ubyte button, SDL2Mouse mouse){
-        mainGame.shootBulletTowards(mouse.x, mouse.y);
+        if(mainGame.isRunning){
+            mainGame.shootBulletTowards(mouse.x, mouse.y);
+        }
         super.handleMouseClick(button, mouse);
     }
 
