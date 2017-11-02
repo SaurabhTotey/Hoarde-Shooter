@@ -6,6 +6,7 @@
 module objects.Bullet;
 
 import std.math;
+import App;
 import objects.Entity;
 
 /**
@@ -23,9 +24,28 @@ class Bullet: Entity{
      * Angle is in radians
      */
     this(int x, int y, double angle){
-        super("res/images/Bullet.png", Rectangle(x, y, this.width, this.height, angle), 30);
+        super("res/images/Bullet.png", Rectangle(x, y, this.width, this.height, angle), 30, 1);
         this.componentVelocities = [cos(angle), sin(angle)];
         this.componentVelocities *= this.maxSpeed;
+    }
+
+    /**
+     * What the bullet does every tick
+     * It does the default entity action of moving, but if it goes out of bounds, it dies
+     */
+    override void tickAction(){
+        super.tickAction();
+        if(mainGame.isOutOfBounds(this.hitbox)){
+            this.health = 0;
+        }
+    }
+
+    /**
+     * A bullet detracts from another entity's health on collision
+     */
+    override void onCollide(Entity other){
+        other.health -= this.damage;
+        this.health = 0;
     }
 
 }

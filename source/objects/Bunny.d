@@ -4,6 +4,7 @@
  */
 module objects.Bunny;
 
+import App;
 import objects.Entity;
 
 /**
@@ -17,7 +18,7 @@ class Bunny: Entity{
      * Bunnies always have a maximum velocity of 25
      */
     this(Rectangle hitbox){
-        super("res/images/DisgustingBunny.png", hitbox, 25);
+        super("res/images/DisgustingBunny.png", hitbox, 25, 100);
     }
 
     /**
@@ -28,5 +29,10 @@ class Bunny: Entity{
         super.tickAction();
         this.componentVelocities = 0;
     }
+
+    /**
+     * Bunnies do nothing on collision with other entities
+     */
+    override void onCollide(Entity other){}
 
 }

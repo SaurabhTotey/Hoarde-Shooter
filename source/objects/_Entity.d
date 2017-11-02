@@ -19,15 +19,17 @@ abstract class Entity{
     Rectangle hitbox;                       ///The bounds for where this entity actually takes up space or exists within the world
     immutable int maxSpeed;                 ///The highest speed this entity can travel at; speed is the magnitude of the velocities
     Vector!(double, 2) componentVelocities; ///A velocity vector of an entity where the x component is the x velocity and the y component is the y velocity
+    int health;                             ///How much health the entity has
 
     /**
      * Necessary constructor for any entity
-     * Takes in a path for its representative image, a hitbox, and a max speed because all entities need those
+     * Takes in a path for its representative image, a hitbox, a max speed, and a health because all entities need those
      */
-    this(string imagePath, Rectangle hitbox, int maxSpeed){
+    this(string imagePath, Rectangle hitbox, int maxSpeed, int health){
         this.imagePath = imagePath;
         this.hitbox = hitbox;
         this.maxSpeed = maxSpeed;
+        this.health = health;
         this.componentVelocities = 0;
     }
 
@@ -44,6 +46,11 @@ abstract class Entity{
         this.hitbox.x += this.componentVelocities.x;
         this.hitbox.y += this.componentVelocities.y;
     }
+
+    /**
+     * What the entity should do when colliding with another entity
+     */
+    void onCollide(Entity other);
 
 }
 
