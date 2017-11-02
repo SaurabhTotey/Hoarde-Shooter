@@ -5,6 +5,7 @@
 module objects.Entity;
 
 import std.algorithm;
+import std.math;
 import std.string;
 import gfm.math;
 
@@ -52,17 +53,29 @@ abstract class Entity{
  * Isn't just an SDL_Rect because SDL2 is needed for SDL_Rect, and a separation of graphics from logic was wanted
  */
 struct Rectangle{
-    double x;               ///The x coordinate of the top left vertex of the rectangle
-    double y;               ///The y coordinate of the top left vertex of the rectangle
+    double x;               ///The x coordinate of the middle of rectangle
+    double y;               ///The y coordinate of the middle of the rectangle
     double w;               ///The width of the rectangle
     double h;               ///The height of the rectangle
     double rotation = 0;    ///The rotation of the rectangle in radians
+
+    /**
+     * Returns the rectangle's vertices in a clockwise order starting from the top left
+     */
+    @property double[][] vertices(){
+        double semiDiagonal = sqrt(this.w.pow(2) + this.h.pow(2));
+        double x1 = this.x - semiDiagonal * cos(this.rotation);
+        double y1 = this.y + semiDiagonal * sin(this.rotation);
+        double x2 = this.x + semiDiagonal * cos(this.rotation);
+        double y2 = this.y - semiDiagonal * sin(this.rotation);
+        return [[x1, y1], [x2, y1], [x2, y2], [x1, y2]];
+    }
 }
 
 /**
  * Returns whether two rectangles contain any overlap
- * TODO account for rotation
+ * TODO make this
  */
 bool intersect(Rectangle first, Rectangle second){
-    return first.x < second.x + second.w && first.x + first.w > second.x && first.y < second.y + second.h && first.h + first.y > second.y;
+    return false;
 }

@@ -74,7 +74,7 @@ class Main: View{
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
         mainGame.allEntities[0].hitbox.rotation = atan2(this.mouseLocation.y - mainGame.allEntities[0].hitbox.y, this.mouseLocation.x - mainGame.allEntities[0].hitbox.x);
-        mainGame.allEntities.each!(entity => new Image(SDL_Rect(entity.hitbox.x.to!int, entity.hitbox.y.to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI + 90).draw(renderer));
+        mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI + 90).draw(renderer));
         renderer.setColor(150, 150, 150);
         super.draw(renderer);
     }

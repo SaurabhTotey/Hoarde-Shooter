@@ -37,7 +37,7 @@ class GameState{
     this(immutable int worldX, immutable int worldY){
         this.worldX = worldX;
         this.worldY = worldY;
-        this.allEntities ~= new Bunny(Rectangle(worldX / 2 - 100 / 2, worldY / 2 - 100 / 2, 100, 100));
+        this.allEntities ~= new Bunny(Rectangle(worldX / 2, worldY / 2, 100, 100));
     }
 
     /**
@@ -81,7 +81,6 @@ class GameState{
      * Can be called on from other threads (most notably, the graphics thread)
      */
     __gshared void shootBulletTowards(int towardsX, int towardsY){
-        //TODO take center of hitbox for player coords
         double playerX = this.allEntities[0].hitbox.x;
         double playerY = this.allEntities[0].hitbox.y;
         this.allEntities ~= new Bullet(playerX.to!int, playerY.to!int, atan2(towardsY - playerY, towardsX - playerX));
