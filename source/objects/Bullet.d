@@ -34,10 +34,11 @@ class Bullet: Entity{
      * It does the default entity action of moving, but if it goes out of bounds, it dies
      */
     override void tickAction(){
-        super.tickAction();
         if(mainGame.isOutOfBounds(this.hitbox)){
             this.health = 0;
         }
+        this.hitbox.x += this.componentVelocities.x;
+        this.hitbox.y += this.componentVelocities.y;
     }
 
     /**

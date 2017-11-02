@@ -43,6 +43,7 @@ abstract class Entity{
         if(this.componentVelocities.length > this.maxSpeed){
             this.componentVelocities = this.componentVelocities.normalized * this.maxSpeed;
         }
+        //Moves the entity by the velocity TODO prevent entities from going out of bounds
         this.hitbox.x += this.componentVelocities.x;
         this.hitbox.y += this.componentVelocities.y;
     }
