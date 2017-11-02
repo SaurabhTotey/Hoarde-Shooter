@@ -73,7 +73,7 @@ class Main: View{
      */
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
-        mainGame.allEntities[0].hitbox.rotation = atan2(this.mouseLocation.y - mainGame.allEntities[0].hitbox.y, this.mouseLocation.x - mainGame.allEntities[0].hitbox.x);
+        mainGame.adjustPlayerRotation(this.mouseLocation.x, this.mouseLocation.y);
         mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI + 90).draw(renderer));
         renderer.setColor(150, 150, 150);
         super.draw(renderer);
@@ -107,7 +107,8 @@ class Main: View{
     }
 
     /**
-     * TODO
+     * Updates the internally stored location of the mouse whenever the mouse moves
+     * Is useful in always having the bullet point towards the mouse
      */
     override void handleMouseMovement(SDL2Mouse mouse){
         if(mainGame.isRunning){
@@ -117,10 +118,11 @@ class Main: View{
     }
 
     /**
-     * TODO
+     * Handles a mouse click by making the bunny shoot a bullet
+     * Only does that behaviour if the game isn't paused and the clicked mouse button was a left click
      */
     override void handleMouseClick(ubyte button, SDL2Mouse mouse){
-        if(mainGame.isRunning){
+        if(mainGame.isRunning && button == SDL_BUTTON_LEFT){
             mainGame.shootBulletTowards(mouse.x, mouse.y);
         }
         super.handleMouseClick(button, mouse);

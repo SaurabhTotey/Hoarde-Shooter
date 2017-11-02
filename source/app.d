@@ -31,6 +31,15 @@ class GameState{
     immutable int worldY;               ///The world height
 
     /**
+     * Gets the player entity from the list of allEntities
+     * The player entity should always be the first item in allEntities
+     * Is functionally useless but just a shortcut for clearer code that is faster to type
+     */
+    @property Entity player(){
+        return this.allEntities[0];
+    }
+
+    /**
      * Makes a game with the given world width and height
      * Also initializes all basic game objects
      */
@@ -68,12 +77,21 @@ class GameState{
     }
 
     /**
+     * Adjusts the player's rotation such that they are facing towards the point
+     * Doesn't change affect their velocity
+     * Can be called on from other threads (most notably, the graphics thread)
+     */
+    __gshared void adjustPlayerRotation(int towardsX, int towardsY){
+        this.player.hitbox.rotation = atan2(towardsY - this.player.hitbox.y, towardsX - this.player.hitbox.x);
+    }
+
+    /**
      * Adjusts the player's velocity by the given x and y amounts
      * Can be called on from other threads (most notably, the graphics thread)
      */
     __gshared void adjustPlayerVelocity(double xChange, double yChange){
-        this.allEntities[0].componentVelocities.x += xChange;
-        this.allEntities[0].componentVelocities.y += yChange;
+        this.player.componentVelocities.x += xChange;
+        this.player.componentVelocities.y += yChange;
     }
 
     /**
@@ -81,8 +99,8 @@ class GameState{
      * Can be called on from other threads (most notably, the graphics thread)
      */
     __gshared void shootBulletTowards(int towardsX, int towardsY){
-        double playerX = this.allEntities[0].hitbox.x;
-        double playerY = this.allEntities[0].hitbox.y;
+        double playerX = this.player.hitbox.x;
+        double playerY = this.player.hitbox.y;
         this.allEntities ~= new Bullet(playerX.to!int, playerY.to!int, atan2(towardsY - playerY, towardsX - playerX));
     }
 
