@@ -25,6 +25,7 @@ class GameState{
 
     immutable int ticksPerSecond = 20;  ///How many times per second the game logic will update all objects
     __gshared Entity[] allEntities;     ///All objects that exist within the world
+    int[Entity] outOfBoundsTimer;       ///A list of entities that correspond to how long they have been out of bounds
     __gshared bool isRunning;           ///Whether the game logic is running or not
     long numTicks;                      ///How many gameticks have passed in the game
     immutable int worldX;               ///The world width
@@ -65,15 +66,32 @@ class GameState{
         SysTime lastTickTime;
         while(mainWindow.isRunning && mainGame !is null){
             while(this.isRunning){
+                if(!mainWindow.isRunning) break;
+                //Caps the tick rate to the ticksPerSecond field by only executing actions at the rate specified by ticksPerSecond
                 if(Clock.currTime >= lastTickTime + dur!"msecs"((1000.0 / this.ticksPerSecond).to!int)){
                     lastTickTime = Clock.currTime;
-                    this.allEntities.each!(entity => entity.tickAction());
+                    //Performs the tick action for every entity and removes old out of bound entities
+                    foreach(entity; allEntities){
+                        entity.tickAction();
+                        //If the entity is out of bounds for an arbitrary 30 ticks, deletes the entity
+                        if(this.isOutOfBounds(entity.hitbox) && ++this.outOfBoundsTimer[entity] > 30){
+                            int entityLocation = this.allEntities.countUntil(entity);
+                            this.allEntities = this.allEntities[0..entityLocation] ~ this.allEntities[entityLocation+1..$];
+                            this.outOfBoundsTimer.remove(entity);
+                        }
+                    }
                     this.numTicks++;
-                    if(!mainWindow.isRunning) break;
                 }
             }
         }
         this.isRunning = false;
+    }
+
+    /**
+     * Returns whether a rectangle is out of bounds
+     */
+    bool isOutOfBounds(Rectangle hitbox){
+        return hitbox.x + hitbox.w / 2 < 0 || hitbox.x - hitbox.w / 2 > this.worldX || hitbox.y + hitbox.h / 2 < 0 || hitbox.y - hitbox.h / 2 > this.worldY;
     }
 
     /**

@@ -43,7 +43,6 @@ abstract class Entity{
         }
         this.hitbox.x += this.componentVelocities.x;
         this.hitbox.y += this.componentVelocities.y;
-        //TODO handle world bounds and deleting entities
     }
 
 }
