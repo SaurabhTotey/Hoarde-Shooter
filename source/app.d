@@ -15,6 +15,7 @@ import graphics.Window;
 import objects.Bullet;
 import objects.Bunny;
 import objects.Entity;
+import objects.Wolf;
 
 /**
  * A storage class for the data of the game
@@ -74,6 +75,10 @@ class GameState{
                     this.allEntities.each!(entity => entity.tickAction());
                     //Removes all entities that are dead
                     this.allEntities = this.allEntities.filter!(entity => entity.health > 0).array;
+                    //Handles all entity collisions TODO this is a very naive implementation that is extremely inefficient
+                    foreach(entity; this.allEntities){
+                        this.allEntities.filter!(other => other != entity && entity.hitbox.intersects(other.hitbox)).each!(collidedWith => entity.onCollide(collidedWith));
+                    }
                     this.numTicks++;
                 }
             }
@@ -113,7 +118,7 @@ class GameState{
     __gshared void shootBulletTowards(int towardsX, int towardsY){
         double playerX = this.player.hitbox.x;
         double playerY = this.player.hitbox.y;
-        this.allEntities ~= new Bullet(playerX.to!int, playerY.to!int, atan2(towardsY - playerY, towardsX - playerX));
+        this.allEntities ~= new Bullet(playerX.to!int, playerY.to!int, atan2(towardsY - playerY, towardsX - playerX), this.player);
     }
 
 }

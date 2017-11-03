@@ -18,15 +18,17 @@ class Bullet: Entity{
     immutable int damage = 5;   ///How much damage each bullet does on contact with another entity
     immutable int width = 25;   ///Hitbox width
     immutable int height = 50;  ///Hitbox height
+    Entity shooter;             ///The entity that shot this bullet; the shooter of this bullet is immune to it
 
     /**
      * Creates a bullet in the given initial position that will go towards the given angle at a fixed velocity
      * Angle is in radians
      */
-    this(int x, int y, double angle){
+    this(int x, int y, double angle, Entity shooter){
         super("res/images/Bullet.png", Rectangle(x, y, this.width, this.height, angle), 30, 1);
         this.componentVelocities = [cos(angle), sin(angle)];
         this.componentVelocities *= this.maxSpeed;
+        this.shooter = shooter;
     }
 
     /**
@@ -45,6 +47,9 @@ class Bullet: Entity{
      * A bullet detracts from another entity's health on collision
      */
     override void onCollide(Entity other){
+        if(other == this.shooter){
+            return;
+        }
         other.health -= this.damage;
         this.health = 0;
     }

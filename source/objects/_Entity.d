@@ -83,6 +83,6 @@ struct Rectangle{
  * Returns whether two rectangles contain any overlap
  * TODO make this
  */
-bool intersect(Rectangle first, Rectangle second){
+bool intersects(Rectangle first, Rectangle second){
     return false;
 }
