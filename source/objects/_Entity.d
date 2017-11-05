@@ -81,8 +81,12 @@ struct Rectangle{
 
 /**
  * Returns whether two rectangles contain any overlap
- * TODO make this; this is a naive implementation that assumes that the rectangles are axis aligned
+ * This implementation isn't perfect but essentially checks collisions as if the rectangles were circles with radii of their smallest dimension
+ * This gives a good approximation for collision, but isn't completely accurate
  */
 bool intersects(Rectangle first, Rectangle second){
-    return first.vertices[0][0] < second.vertices[0][0] + second.w && first.vertices[0][0] + first.w > second.vertices[0][0] && first.vertices[0][1] < second.vertices[0][1] + second.h && first.h + first.vertices[0][1] > second.vertices[0][1];
+    //Takes the radius as the addition of both rectangles' smallest dimensions
+    double radius = ((first.w < first.h)? first.w : first.h) + ((second.w < second.h)? second.w : second.h);
+    //Returns whether the distance is smaller than half the radius
+    return sqrt((first.x - second.x).pow(2) + (first.y - second.y).pow(2)) < radius / 2;
 }
