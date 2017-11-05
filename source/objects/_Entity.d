@@ -65,18 +65,6 @@ struct Rectangle{
     double w;               ///The width of the rectangle
     double h;               ///The height of the rectangle
     double rotation = 0;    ///The rotation of the rectangle in radians
-
-    /**
-     * Returns the rectangle's vertices in a clockwise order starting from the top left
-     */
-    @property double[][] vertices(){
-        double semiDiagonal = sqrt(this.w.pow(2) + this.h.pow(2));
-        double x1 = this.x - semiDiagonal * cos(this.rotation);
-        double y1 = this.y + semiDiagonal * sin(this.rotation);
-        double x2 = this.x + semiDiagonal * cos(this.rotation);
-        double y2 = this.y - semiDiagonal * sin(this.rotation);
-        return [[x1, y1], [x2, y1], [x2, y2], [x1, y2]];
-    }
 }
 
 /**

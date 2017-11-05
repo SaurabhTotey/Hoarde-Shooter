@@ -73,18 +73,20 @@ class GameState{
                     lastTickTime = Clock.currTime;
                     //Performs the tick action for every entity
                     this.allEntities.each!(entity => entity.tickAction());
-                    //Removes all entities that are dead
-                    this.allEntities = this.allEntities.filter!(entity => entity.health > 0).array;
                     //Handles all entity collisions TODO this is a very naive implementation that is extremely inefficient
                     foreach(entity; this.allEntities){
                         this.allEntities.filter!(other => other != entity && entity.hitbox.intersects(other.hitbox)).each!(collidedWith => entity.onCollide(collidedWith));
                     }
+                    //Removes all entities that are dead
+                    this.allEntities = this.allEntities.filter!(entity => entity.health > 0).array;
+
                     //TODO below is temporary
                     if(this.allEntities.length == 1){
                         import std.random;
                         this.allEntities ~= new Wolf(Rectangle(uniform(150, worldX - 150), uniform(150, worldY - 150), 150, 150, -PI / 2));
                     }
                     //TODO above is temporary
+
                     this.numTicks++;
                 }
             }
