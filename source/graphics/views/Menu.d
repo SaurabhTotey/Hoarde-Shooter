@@ -27,7 +27,7 @@ class Menu: View{
         //Adds a new game button in the center of the screen
         this.components ~= new class Button{
             this(){
-                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
                 mainGame = new GameState(window.logicalX, window.logicalY);
@@ -38,7 +38,7 @@ class Menu: View{
         //Adds a quit button in the bottom of the screen
         this.components ~= new class Button{
             this(){
-                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
                 window.isRunning = false;
@@ -55,7 +55,7 @@ class Menu: View{
     override void draw(SDL2Renderer renderer){
         renderer.setViewportFull();
         this.window.clear(0, 255, 0);
-        renderer.setColor(150, 150, 150);
+        renderer.setColor(250, 250, 250);
         super.draw(renderer);
     }
 

@@ -36,7 +36,7 @@ class Main: View{
         this.pauseScreenComponents ~= [
             new class Button{
                 this(){
-                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.3 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.3 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
                 }
                 override void action(){
                     components = null;
@@ -45,7 +45,7 @@ class Main: View{
             },
             new class Button{
                 this(){
-                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
                 }
                 override void action(){
                     //TODO open config settings?
@@ -53,7 +53,7 @@ class Main: View{
             },
             new class Button{
                 this(){
-                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int));
+                    super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
                 }
                 override void action(){
                     mainGame.destroy();

@@ -28,7 +28,7 @@ class Label: Pane{
      * Text will always be centered within the bounds, and try to fill up as much of the bounds as possible
      */
     this(SDL_Rect location, string text, Font font, SDL_Color color = SDL_Color(0, 0, 0, 255)){
-        super(location);
+        super(location, SDL_Color(0, 0, 0, 0));
         this.text = text;
         this.font = font;
         this.color = color;

@@ -55,18 +55,10 @@ abstract class View{
 
     /**
      * Handles mouse movement and takes in the SDL2Mouse
-     * Default functionality is to just have the components that were moused over handle the mouse motion
-     * Finds moused over components by calculating the mouse's movement from its previous to its current position, and then having the corresponding components handle the rest
-     * TODO doesn't actually correctly find the path the mouse took; currently just does a rectangle
+     * Default functionality is to just have all components handle mouse functionality, regardless of whether they were actually the ones moused over
      */
     void handleMouseMovement(SDL2Mouse mouse){
-        SDL_Point currentPosition = mouse.position;
-        SDL_Point previousPosition = mouse.previousPosition;
-        foreach(x; previousPosition.x .. currentPosition.x){
-            foreach(y; previousPosition.y .. currentPosition.y){
-                this.components.filter!(component => component.contains(SDL_Point(x, y))).each!(component => component.handleMouseMovement(mouse));
-            }
-        }
+        this.components.each!(component => component.handleMouseMovement(mouse));
     }
 
     /**

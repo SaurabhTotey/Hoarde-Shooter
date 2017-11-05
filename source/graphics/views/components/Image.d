@@ -28,7 +28,7 @@ class Image: Pane{
      * Ideally, the rectangle is always in the same proportions as the original image
      */
     this(SDL_Rect location, string path, SDLImage imageCreator, SDL2 sdl, double rotation = 0){
-        super(location);
+        super(location, SDL_Color(0, 0, 0, 0));
         this.path = path;
         this.imageCreator = imageCreator;
         this.sdl = sdl;

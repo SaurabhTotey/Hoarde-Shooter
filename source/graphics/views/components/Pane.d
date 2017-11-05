@@ -4,7 +4,7 @@
 module graphics.views.components.Pane;
 
 public import gfm.sdl2;
-import graphics.views.components.Component;
+public import graphics.views.components.Component;
 
 /**
  * A very basic implementation of a component
@@ -12,18 +12,22 @@ import graphics.views.components.Component;
  */
 class Pane: Component{
 
+    SDL_Color color;    ///The color that this pane is
+
     /**
      * A constructor for pane is the same as a constructor for any component
-     * Takes in the location as an SDL_Rect
+     * Takes in the location as an SDL_Rect as well as the color of the component
      */
-    this(SDL_Rect location){
+    this(SDL_Rect location, SDL_Color color){
         super(location);
+        this.color = color;
     }
 
     /**
      * Draws the component as a filled rectangle
      */
     override void draw(SDL2Renderer renderer){
+        renderer.setColor(this.color.r, this.color.g, this.color.b, this.color.a);
         renderer.fillRect(this.location.x, this.location.y, this.location.w, this.location.h);
     }
 
