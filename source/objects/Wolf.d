@@ -22,7 +22,7 @@ class Wolf: Entity{
      */
     this(Rectangle hitbox){
         //TODO change image path and scale health and damage off of size
-        super("res/images/DisgustingBunny.png", hitbox, 20, 1);
+        super("res/images/DisgustingWolf.png", hitbox, 20, 1);
     }
 
     /**
@@ -39,8 +39,8 @@ class Wolf: Entity{
      * Wolves hurt bunnies
      */
     override void onCollide(Entity other){
-        try{
-            (cast(Bunny) other).health -= this.damage;
-        }catch(Exception e){}
+        if(cast(Bunny) other){
+            other.health -= this.damage;
+        }
     }
 }

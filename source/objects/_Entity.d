@@ -81,8 +81,8 @@ struct Rectangle{
 
 /**
  * Returns whether two rectangles contain any overlap
- * TODO make this
+ * TODO make this; this is a naive implementation that assumes that the rectangles are axis aligned
  */
 bool intersects(Rectangle first, Rectangle second){
-    return false;
+    return first.vertices[0][0] < second.vertices[0][0] + second.w && first.vertices[0][0] + first.w > second.vertices[0][0] && first.vertices[0][1] < second.vertices[0][1] + second.h && first.h + first.vertices[0][1] > second.vertices[0][1];
 }

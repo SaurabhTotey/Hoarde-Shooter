@@ -8,6 +8,7 @@ module graphics.views.Main;
 import std.algorithm;
 import std.conv;
 import std.math;
+import gfm.math;
 import App;
 import graphics.views.components.Button;
 import graphics.views.components.Image;
@@ -74,7 +75,7 @@ class Main: View{
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
         mainGame.adjustPlayerRotation(this.mouseLocation.x, this.mouseLocation.y);
-        mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation * 180 / PI + 90).draw(renderer));
+        mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation.degrees + 90).draw(renderer));
         renderer.setColor(150, 150, 150);
         super.draw(renderer);
     }

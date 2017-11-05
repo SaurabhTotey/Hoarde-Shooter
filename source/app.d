@@ -79,6 +79,12 @@ class GameState{
                     foreach(entity; this.allEntities){
                         this.allEntities.filter!(other => other != entity && entity.hitbox.intersects(other.hitbox)).each!(collidedWith => entity.onCollide(collidedWith));
                     }
+                    //TODO below is temporary
+                    if(this.allEntities.length == 1){
+                        import std.random;
+                        this.allEntities ~= new Wolf(Rectangle(uniform(150, worldX - 150), uniform(150, worldY - 150), 150, 150, -PI / 2));
+                    }
+                    //TODO above is temporary
                     this.numTicks++;
                 }
             }
