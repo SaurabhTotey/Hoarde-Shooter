@@ -23,7 +23,6 @@ import graphics.views.View;
 class Main: View{
 
     Component[] pauseScreenComponents;  ///The components that will appear when the game is paused
-    SDL_Point mouseLocation;            ///The position of the mouse
 
     /**
      * Given the window, makes the main view
@@ -32,6 +31,8 @@ class Main: View{
      */
     this(Window window){
         super(window);
+        //Makes the screen background grass; couldn't make tiled background because rendering it took too long with current architecture
+        this.components ~= new Image(SDL_Rect(0, 0, this.window.logicalX, this.window.logicalY), "res/images/Grass.png", this.window.imageCreator, this.window.sdl);
         //Defines pause screen buttons
         this.pauseScreenComponents ~= [
             new class Button{
@@ -39,7 +40,7 @@ class Main: View{
                     super(SDL_Rect((0.1 * window.logicalX).to!int, (0.3 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
                 }
                 override void action(){
-                    components = null;
+                    components = components[0..$-pauseScreenComponents.length];
                     mainGame.isRunning = true;
                 }
             },
@@ -74,10 +75,15 @@ class Main: View{
      */
     override void draw(SDL2Renderer renderer){
         this.window.clear(0, 255, 0);
-        mainGame.adjustPlayerRotation(this.mouseLocation.x, this.mouseLocation.y);
+        if(mainGame.isRunning){
+            mainGame.adjustPlayerRotation(this.window.sdl.mouse.x, this.window.sdl.mouse.y);
+        }
+        this.components[0].draw(renderer);
         mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation.degrees + 90).draw(renderer));
         renderer.setColor(150, 150, 150);
-        super.draw(renderer);
+        foreach(i; 1..this.components.length){
+            this.components[i].draw(renderer);
+        }
     }
 
     /**
@@ -102,20 +108,9 @@ class Main: View{
         }
         if(keyboard.testAndRelease(SDLK_ESCAPE)){
             mainGame.isRunning = !mainGame.isRunning;
-            this.components = (mainGame.isRunning)? null : this.pauseScreenComponents;
+            this.components = (mainGame.isRunning)? this.components[0..$-this.pauseScreenComponents.length] : this.components ~ this.pauseScreenComponents;
         }
         super.handleKey(keyboard);
-    }
-
-    /**
-     * Updates the internally stored location of the mouse whenever the mouse moves
-     * Is useful in always having the bullet point towards the mouse
-     */
-    override void handleMouseMovement(SDL2Mouse mouse){
-        if(mainGame.isRunning){
-            this.mouseLocation = mouse.position;
-        }
-        super.handleMouseMovement(mouse);
     }
 
     /**
