@@ -14,9 +14,25 @@ import graphics.views.components.Label;
  */
 abstract class Component{
 
-    SDL_Rect location;      ///The location of the component; all components are rectangular, but don't need to be drawn as such
+    SDL_Rect _location;     ///The location of the component; all components are rectangular, but don't need to be drawn as such
 
     alias location this;    ///Allows the component to be accessed as if it were its rectangle of location
+
+    /**
+     * Property method to get the location of this component
+     * Exists because components may need to override behaviour for when its size is changed
+     */
+    @property SDL_Rect location(){
+        return this._location;
+    }
+    /**
+     * Property method to get the location of this component
+     * Exists because components may need to override behaviour for when its size is changed
+     */
+    @property SDL_Rect location(SDL_Rect location){
+        this._location = location;
+        return this._location;
+    }
 
     /**
      * Constructs a component with a location
