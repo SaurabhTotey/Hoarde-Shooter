@@ -16,8 +16,6 @@ abstract class Component{
 
     SDL_Rect _location;     ///The location of the component; all components are rectangular, but don't need to be drawn as such
 
-    alias location this;    ///Allows the component to be accessed as if it were its rectangle of location
-
     /**
      * Property method to get the location of this component
      * Exists because components may need to override behaviour for when its size is changed

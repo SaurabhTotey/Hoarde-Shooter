@@ -36,6 +36,15 @@ abstract class View{
     }
 
     /**
+     * When a view gets destroyed, it releases all of its components
+     */
+    ~this(){
+        foreach(component; this.components){
+            component.destroy();
+        }
+    }
+
+    /**
      * The drawing method of the view which takes in the window's renderer
      * Because the view defines how the screen looks at that activity/point in time, a view must override the draw method
      * Has base functionality of drawing all of the view's contained components by calling the components' draw methods
@@ -66,7 +75,7 @@ abstract class View{
      * Default functionality is to find components that were clicked and to pass the mouse click event to those components
      */
     void handleMouseClick(ubyte button, SDL2Mouse mouse){
-        this.components.filter!(component => component.contains(mouse.position)).each!(component => component.handleMouseClick(button, mouse));
+        this.components.filter!(component => component.location.contains(mouse.position)).each!(component => component.handleMouseClick(button, mouse));
     }
 
     /**
@@ -74,7 +83,7 @@ abstract class View{
      * Default functionality is to find components that the mouse was released on and to pass the mouse click release event to those components
      */
     void handleMouseRelease(ubyte button, SDL2Mouse mouse){
-        this.components.filter!(component => component.contains(mouse.position)).each!(component => component.handleMouseRelease(button, mouse));
+        this.components.filter!(component => component.location.contains(mouse.position)).each!(component => component.handleMouseRelease(button, mouse));
     }
 
 }

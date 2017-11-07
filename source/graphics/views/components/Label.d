@@ -5,7 +5,6 @@
  */
 module graphics.views.components.Label;
 
-import std.typecons;
 public import graphics.Font;
 import graphics.views.components.Pane;
 
@@ -29,9 +28,8 @@ class Label: Pane{
      * Sets the  location of this component and updates the image as a texture size
      */
     @property override SDL_Rect location(SDL_Rect location){
-        if(this._textAsTexture !is null){
-            this._textAsTexture.destroy();
-        }
+        this._textAsTexture.destroy();
+        this._textAsTexture = null;
         this._location = location;
         //The actual SDLFont that is directly used to create the text; is used internally, as font size is determined within this method: not before or after
         SDLFont literalFont;
@@ -69,6 +67,7 @@ class Label: Pane{
      * Releases the text as a texture so GFM doesn't complain
      */
     ~this(){
+        this._textAsSurface.destroy();
         this._textAsTexture.destroy();
     }
 

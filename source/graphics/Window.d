@@ -9,6 +9,7 @@ module graphics.Window;
 import std.conv;
 import std.datetime;
 import std.experimental.logger;
+import core.thread;
 import gfm.logger;
 import gfm.sdl2;
 import graphics.views.View;
@@ -29,7 +30,7 @@ class Window{
     SDL2Renderer renderer;                          ///The utility object for drawing to the screen of the window; is derived off of the window
     SDLTTF ttf;                                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
     SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
-    View currentScreen;                             ///The current view of the window; defines what the screen of the window is for the most part
+    View _currentScreen;                            ///The current view of the window; defines what the screen of the window is for the most part
     int framerate = 60;                             ///How many times per second the screen updates; is a max, not a guarantee; defaults to 60
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
     bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
@@ -40,6 +41,30 @@ class Window{
     immutable int logicalY = scaling * yAspect;     ///The logical y is the logical height of the screen; coordinates are defined using this number as the total screen height, and then they get scaled to the actual screen height; this logicalY in conjunction with the logicalX define the aspect ratio that defined components are displayed at
 
     alias window this;              ///Allows the window to be accessed as the actual SDL2Window that it represents
+
+    /**
+     * Gets the current view
+     * Is a property method so that when views are changed, old views are destroyed
+     */
+    @property View currentScreen(){
+        return this._currentScreen;
+    }
+
+    /**
+     * Sets the current view
+     * Is a property method so that when views are changed, old views are destroyed
+     */
+    @property View currentScreen(View newScreen){
+        View oldScreen = this.currentScreen;
+        this._currentScreen = newScreen;
+        //Creates a new thread to delete the old screen so that resources get destroyed and GFM doesn't complain
+        //Does it in a new thread because there needs to be delay so that the window can finish changing screens 
+        new Thread({
+            Thread.sleep(dur!"msecs"(50));
+            oldScreen.destroy();
+        }).start();
+        return this.currentScreen;
+    }
 
     /**
      * A constructor for a window
@@ -80,6 +105,7 @@ class Window{
         this.sdl.destroy();
         this.window.destroy();
         this.renderer.destroy();
+        this._currentScreen.destroy();
     }
 
     /**

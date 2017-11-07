@@ -8,6 +8,7 @@ module graphics.views.Main;
 import std.algorithm;
 import std.conv;
 import std.math;
+import std.typecons;
 import gfm.math;
 import App;
 import graphics.views.components.Button;
@@ -79,10 +80,18 @@ class Main: View{
             mainGame.adjustPlayerRotation(this.window.sdl.mouse.x, this.window.sdl.mouse.y);
         }
         this.components[0].draw(renderer);
-        mainGame.allEntities.each!(entity => new Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation.degrees + 90).draw(renderer));
-        renderer.setColor(150, 150, 150);
+        mainGame.allEntities.each!(entity => scoped!Image(SDL_Rect((entity.hitbox.x - entity.hitbox.w / 2).to!int, (entity.hitbox.y - entity.hitbox.h / 2).to!int, entity.hitbox.w.to!int, entity.hitbox.h.to!int), entity.imagePath, this.window.imageCreator, this.window.sdl, entity.hitbox.rotation.degrees + 90).draw(renderer));
         foreach(i; 1..this.components.length){
             this.components[i].draw(renderer);
+        }
+    }
+
+    /**
+     * Releases all of the resources of the main screen by deleting components and pause screen components
+     */
+    ~this(){
+        foreach(component; this.pauseScreenComponents){
+            component.destroy();
         }
     }
 
