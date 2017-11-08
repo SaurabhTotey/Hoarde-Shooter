@@ -9,6 +9,7 @@ import App;
 import graphics.views.components.Button;
 import graphics.views.components.Label;
 import graphics.views.Main;
+import graphics.views.Options;
 import graphics.views.View;
 
 /**
@@ -41,7 +42,7 @@ class Menu: View{
                 super(SDL_Rect((0.1 * window.logicalX).to!int, (0.6 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
-
+                window.currentScreen = new Options!Menu(window);
             }
         };
         this.components ~= this.components[2].makeTextOverlay("Options", Font(Calligraphy.OpenSans, this.window.ttf));
