@@ -27,7 +27,7 @@ class Menu: View{
         //Adds a new game button in the center of the screen
         this.components ~= new class Button{
             this(){
-                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.4 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
                 mainGame = new GameState(window.logicalX, window.logicalY);
@@ -35,16 +35,26 @@ class Menu: View{
             }
         };
         this.components ~= this.components[0].makeTextOverlay("New Game", Font(Calligraphy.OpenSans, this.window.ttf));
+        //Adds an options button
+        this.components ~= new class Button{
+            this(){
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.6 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
+            }
+            override void action(){
+
+            }
+        };
+        this.components ~= this.components[2].makeTextOverlay("Options", Font(Calligraphy.OpenSans, this.window.ttf));
         //Adds a quit button in the bottom of the screen
         this.components ~= new class Button{
             this(){
-                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.7 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
+                super(SDL_Rect((0.1 * window.logicalX).to!int, (0.8 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
                 window.isRunning = false;
             }
         };
-        this.components ~= this.components[2].makeTextOverlay("Exit", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[4].makeTextOverlay("Exit", Font(Calligraphy.OpenSans, this.window.ttf));
     }
 
     /**

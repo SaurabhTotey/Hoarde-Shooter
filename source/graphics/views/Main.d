@@ -65,9 +65,13 @@ class Main: View{
             }
         ];
         //Labels the pause screen buttons
-        string[] buttonLabels = ["Resume", "Config", "Exit Game"];
+        string[] buttonLabels = ["Resume", "Options", "Exit Game"];
         foreach(i; 0..3){
             pauseScreenComponents ~= pauseScreenComponents[i].makeTextOverlay(buttonLabels[i], Font(Calligraphy.OpenSans, this.window.ttf));
+        }
+        //If the main screen is constructed while the game is paused, it adds the pauseScreenComponents to the list of components
+        if(!mainGame.isRunning){
+            this.components ~= pauseScreenComponents;
         }
     }
 
