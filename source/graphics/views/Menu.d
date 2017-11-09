@@ -35,17 +35,17 @@ class Menu: View{
                 window.currentScreen = new Main(window);
             }
         };
-        this.components ~= this.components[0].makeTextOverlay("New Game", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[0].makeTextOverlay("New Game", Font(Calligraphy.OpenSans, window.ttf));
         //Adds an options button
         this.components ~= new class Button{
             this(){
                 super(SDL_Rect((0.1 * window.logicalX).to!int, (0.6 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
-                window.currentScreen = new Options!Menu(window);
+                window.currentScreen = new Options(window, new Menu(window));
             }
         };
-        this.components ~= this.components[2].makeTextOverlay("Options", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[2].makeTextOverlay("Options", Font(Calligraphy.OpenSans, window.ttf));
         //Adds a quit button in the bottom of the screen
         this.components ~= new class Button{
             this(){
@@ -55,7 +55,9 @@ class Menu: View{
                 window.isRunning = false;
             }
         };
-        this.components ~= this.components[4].makeTextOverlay("Exit", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[4].makeTextOverlay("Exit", Font(Calligraphy.OpenSans, window.ttf));
+        //Adds the title to the top
+        this.components ~= new Label(SDL_Rect((0.1 * window.logicalX).to!int, 0, (0.8 * window.logicalX).to!int, (0.4 * window.logicalY).to!int), "Hoarde Shooter!", Font(Calligraphy.SpecialElite, window.ttf));
     }
 
     /**

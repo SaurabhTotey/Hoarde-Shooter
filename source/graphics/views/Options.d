@@ -5,9 +5,9 @@ import graphics.views.components.Button;
 import graphics.views.components.Label;
 import graphics.views.View;
 
-class Options(T: View): View{
+class Options: View{
 
-    this(Window window){
+    this(Window window, View locationAfterExit){
         super(window);
         this.components ~= new Label(SDL_Rect(0, 0, window.logicalX, (window.logicalY * 0.8).to!int), "THIS SCREEN IS INCOMPLETE", Font(Calligraphy.OpenSans, window.ttf));
         this.components ~= new class Button{
@@ -15,10 +15,10 @@ class Options(T: View): View{
                 super(SDL_Rect(0, (window.logicalY * 0.8).to!int, window.logicalX, (window.logicalY * 0.1).to!int), SDL_Color(150, 150, 150));
             }
             override void action(){
-                window.currentScreen = new T(window);
+                window.currentScreen = locationAfterExit;
             }
         };
-        this.components ~= this.components[1].makeTextOverlay("OH GOD, GO BACK!", Font(Calligraphy.OpenSans, this.window.ttf));
+        this.components ~= this.components[1].makeTextOverlay("OH GOD, GO BACK!", Font(Calligraphy.OpenSans, window.ttf));
     }
 
     override void draw(SDL2Renderer renderer){

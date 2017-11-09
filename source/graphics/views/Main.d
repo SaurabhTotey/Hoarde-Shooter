@@ -34,7 +34,7 @@ class Main: View{
     this(Window window){
         super(window);
         //Makes the screen background grass; couldn't make tiled background because rendering it took too long with current architecture
-        this.components ~= new Image(SDL_Rect(0, 0, this.window.logicalX, this.window.logicalY), "res/images/Grass.png", this.window.imageCreator, this.window.sdl);
+        this.components ~= new Image(SDL_Rect(0, 0, window.logicalX, window.logicalY), "res/images/Grass.png", window.imageCreator, window.sdl);
         //Defines pause screen buttons
         this.pauseScreenComponents ~= [
             new class Button{
@@ -51,7 +51,7 @@ class Main: View{
                     super(SDL_Rect((0.1 * window.logicalX).to!int, (0.5 * window.logicalY).to!int, (0.8 * window.logicalX).to!int, (0.1 * window.logicalY).to!int), SDL_Color(150, 150, 150));
                 }
                 override void action(){
-                    window.currentScreen = new Options!Main(window);
+                    window.currentScreen = new Options(window, new Main(window));
                 }
             },
             new class Button{
@@ -68,7 +68,7 @@ class Main: View{
         //Labels the pause screen buttons
         string[] buttonLabels = ["Resume", "Options", "Exit Game"];
         foreach(i; 0..3){
-            pauseScreenComponents ~= pauseScreenComponents[i].makeTextOverlay(buttonLabels[i], Font(Calligraphy.OpenSans, this.window.ttf));
+            pauseScreenComponents ~= pauseScreenComponents[i].makeTextOverlay(buttonLabels[i], Font(Calligraphy.OpenSans, window.ttf));
         }
         //If the main screen is constructed while the game is paused, it adds the pauseScreenComponents to the list of components
         if(!mainGame.isRunning){

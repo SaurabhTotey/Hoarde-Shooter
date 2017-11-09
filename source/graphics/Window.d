@@ -58,9 +58,8 @@ class Window{
         View oldScreen = this.currentScreen;
         this._currentScreen = newScreen;
         //Creates a new thread to delete the old screen so that resources get destroyed and GFM doesn't complain
-        //Does it in a new thread because there needs to be delay so that the window can finish changing screens 
+        //Does it in a new thread because there needs to be delay so that the window can finish changing screens
         new Thread({
-            Thread.sleep(dur!"msecs"(50));
             oldScreen.destroy();
         }).start();
         return this.currentScreen;
@@ -72,8 +71,10 @@ class Window{
      * Sets up all of the window's main fields and utility objects
      */
     this(string title, string pathToIcon = null, int width = 640, int height = 480){
-        //Constructs a ConsoleLogger and sets up the sdl object of the window
-        this.logger = new ConsoleLogger();
+        //Constructs a ConsoleLogger if debug mode is on and sets up the sdl object of the window
+        debug{
+            this.logger = new ConsoleLogger();
+        }
         this.sdl = new SDL2(logger);
         //Uses the constructed sdl object to make the window at the center of the screen with the given width and height that can be resized
         this.window = new SDL2Window(this.sdl, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS);
