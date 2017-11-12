@@ -30,6 +30,7 @@ class Window{
     SDL2Renderer renderer;                          ///The utility object for drawing to the screen of the window; is derived off of the window
     SDLTTF ttf;                                     ///The utility object for drawing text to the screen of the window; is derived from the sdl object
     SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
+    SDLMixer mixer;                                 ///The SDL Mixer that plays sound and is a utility object
     View _currentScreen;                            ///The current view of the window; defines what the screen of the window is for the most part
     int framerate = 60;                             ///How many times per second the screen updates; is a max, not a guarantee; defaults to 60
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
@@ -85,6 +86,8 @@ class Window{
         this.ttf = new SDLTTF(this.sdl);
         //Makes the utility object to allow the creation of images
         this.imageCreator = new SDLImage(this.sdl);
+        //Makes the utility object to allow the creation of sound
+        this.mixer = new SDLMixer(this.sdl, MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG);
         //Sets the icon of the window if a path to an icon was provided
         if(pathToIcon !is null){
             SDL2Surface iconSurface = this.imageCreator.load(pathToIcon);

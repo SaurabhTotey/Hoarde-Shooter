@@ -33,6 +33,8 @@ class Main: View{
      */
     this(Window window){
         super(window);
+        this.currentMusic = new SDLSample(window.mixer , "res/sounds/music/SpinningSong.wav");
+        this.currentMusic.play(-1);
         //Makes the screen background grass; couldn't make tiled background because rendering it took too long with current architecture
         this.components ~= new Image(SDL_Rect(0, 0, window.logicalX, window.logicalY), "res/images/Grass.png", window.imageCreator, window.sdl);
         //Defines pause screen buttons
