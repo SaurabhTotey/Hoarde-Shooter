@@ -61,6 +61,7 @@ class Window{
         //Creates a new thread to delete the old screen so that resources get destroyed and GFM doesn't complain
         //Does it in a new thread because there needs to be delay so that the window can finish changing screens
         new Thread({
+            Thread.sleep(dur!"msecs"(50));
             oldScreen.destroy();
         }).start();
         return this.currentScreen;
@@ -163,8 +164,6 @@ class Window{
         SysTime lastTickTime;   //The time of the last tick; is used for framerate calculations
         //Runs while a window quit hasn't been requested and while it is counted as still being running
         while(!this.sdl.wasQuitRequested() && this.isRunning){
-            //Clears the buffer
-            this.clear();
             //Polls for events given to the window from the user and sends them off to be handled by appropriate methods
             SDL_Event event;
             while(this.sdl.pollEvent(&event)){
