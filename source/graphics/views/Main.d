@@ -11,6 +11,7 @@ import std.math;
 import std.typecons;
 import gfm.math;
 import App;
+import graphics.Sound;
 import graphics.views.components.Button;
 import graphics.views.components.Image;
 import graphics.views.components.Label;
@@ -33,8 +34,15 @@ class Main: View{
      */
     this(Window window){
         super(window);
-        this.currentMusic = new SDLSample(window.mixer , "res/sounds/music/SpinningSong.wav");
-        this.currentMusic.play(-1);
+        //Ensures that the spinning song isn't playing and then makes the window start playing it
+        bool shouldMusicPlay = true;
+        foreach(sound; window.allSounds){
+            if(sound.id == Music.SpinningSong.to!string){
+                shouldMusicPlay = false;
+                break;
+            }
+        }
+        if(shouldMusicPlay) window.allSounds ~= new Sound!Music(Music.SpinningSong, window.mixer, -1);
         //Makes the screen background grass; couldn't make tiled background because rendering it took too long with current architecture
         this.components ~= new Image(SDL_Rect(0, 0, window.logicalX, window.logicalY), "res/images/Grass.png", window.imageCreator, window.sdl);
         //Defines pause screen buttons

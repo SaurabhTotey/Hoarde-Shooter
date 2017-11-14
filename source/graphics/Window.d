@@ -6,14 +6,17 @@
  */
 module graphics.Window;
 
+import std.algorithm;
+import std.array;
 import std.conv;
 import std.datetime;
 import std.experimental.logger;
 import core.thread;
 import gfm.logger;
 import gfm.sdl2;
-import graphics.views.View;
 import graphics.views.Menu;
+import graphics.Sound;
+import graphics.views.View;
 
 /**
  * A class that contains all basic objects for basic SDL functionality
@@ -32,6 +35,7 @@ class Window{
     SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
     SDLMixer mixer;                                 ///The SDL Mixer that plays sound and is a utility object
     View _currentScreen;                            ///The current view of the window; defines what the screen of the window is for the most part
+    Sample[] allSounds;                             ///All the sounds that are currently playing in the window
     int framerate = 60;                             ///How many times per second the screen updates; is a max, not a guarantee; defaults to 60
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
     bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
@@ -191,6 +195,11 @@ class Window{
                 lastTickTime = Clock.currTime;
                 this.renderer.present();
             }
+            //Ensures that all sound that is unused gets deleted or repeated if necessary
+            Sample[] deadSounds = this.allSounds.filter!(sound => sound.isFinished).array;
+            this.allSounds = this.allSounds.filter!(sound => !sound.isFinished).array;
+            deadSounds.each!(sound => sound.destroy());
+            this.allSounds.each!(sound => sound.tick());
         }
         //Now that the window has stopped running because a quit was requested, marks the window as not running
         this.isRunning = false;

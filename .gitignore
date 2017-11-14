@@ -9,3 +9,4 @@ dub.selections.json
 *.dll
 *.exe
 *.lib
+.vscode/

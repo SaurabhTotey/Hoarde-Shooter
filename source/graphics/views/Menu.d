@@ -4,6 +4,7 @@
  */
 module graphics.views.Menu;
 
+import std.algorithm;
 import std.conv;
 import App;
 import graphics.views.components.Button;
@@ -25,6 +26,8 @@ class Menu: View{
      */
     this(Window window){
         super(window);
+        //Clears the window's music
+        window.allSounds.each!(sound => sound.isFinished = true);
         //Adds a new game button in the center of the screen
         this.components ~= new class Button{
             this(){

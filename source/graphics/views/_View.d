@@ -27,7 +27,6 @@ abstract class View{
     Window window;              ///The window that the view is in
     Component[] components;     ///The components that the view has: components are widgets that appear on the screen and take up a space that is the only space they define the layout and behave in
     Component focusedComponent; ///The currently focused component that will recieve any ambiguous events TODO add functionality
-    SDLSample currentMusic;     ///The music that should currently be playing in the view
 
     /**
      * Constructs a view with a given window so the view can access necessary window information when needed
@@ -43,7 +42,6 @@ abstract class View{
         foreach(component; this.components){
             component.destroy();
         }
-        this.currentMusic.destroy();
     }
 
     /**
