@@ -35,7 +35,7 @@ class Window{
     SDLImage imageCreator;                          ///The utility object for drawing images to the screen of the window; is derived from the sdl object
     SDLMixer mixer;                                 ///The SDL Mixer that plays sound and is a utility object
     View _currentScreen;                            ///The current view of the window; defines what the screen of the window is for the most part
-    Sample[] allSounds;                             ///All the sounds that are currently playing in the window
+    __gshared Sample[] allSounds;                   ///All the sounds that are currently playing in the window; is handled on a separate thread
     int framerate = 60;                             ///How many times per second the screen updates; is a max, not a guarantee; defaults to 60
     __gshared bool isRunning;                       ///A thread global boolean that can be checked for whether the window is currently running or not
     bool isFullscreen;                              ///A boolean that just contains the state of whether the window is fullscreen or not
@@ -103,6 +103,16 @@ class Window{
         this.window.setTitle(title);
         //Sets the default view as a Menu
         this.currentScreen = new Menu(this);
+        //Starts a new thread to handle all audio and delete old sounds
+        new Thread({
+            while(this.isRunning){
+                Sample[] deadSounds = this.allSounds.filter!(sound => sound.isFinished).array;
+                this.allSounds = this.allSounds.filter!(sound => !sound.isFinished).array;
+                deadSounds.each!(sound => sound.destroy());
+                this.allSounds.each!(sound => sound.tick());
+                Thread.sleep(dur!"seconds"(1));
+            }
+        }).start();
     }
 
     /**
@@ -115,6 +125,9 @@ class Window{
         this.window.destroy();
         this.renderer.destroy();
         this._currentScreen.destroy();
+        foreach(sound; this.allSounds){
+            sound.destroy();
+        }
     }
 
     /**
@@ -195,11 +208,6 @@ class Window{
                 lastTickTime = Clock.currTime;
                 this.renderer.present();
             }
-            //Ensures that all sound that is unused gets deleted or repeated if necessary
-            Sample[] deadSounds = this.allSounds.filter!(sound => sound.isFinished).array;
-            this.allSounds = this.allSounds.filter!(sound => !sound.isFinished).array;
-            deadSounds.each!(sound => sound.destroy());
-            this.allSounds.each!(sound => sound.tick());
         }
         //Now that the window has stopped running because a quit was requested, marks the window as not running
         this.isRunning = false;
