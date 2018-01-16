@@ -38,7 +38,7 @@ class MainMenu : Screen {
             override void draw() {
                 this.container.window.renderer.fillRect(this.location,
                         this.isHovered ? this.hoverBg : this.normalBg);
-                this.container.window.renderer.copy(this.text, this.location);
+                this.container.window.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
             }
         };
     }
@@ -56,11 +56,14 @@ class MainMenu : Screen {
     }
 
     /**
-     * The screen just has a green background
+     * The screen just has a tiled grassy background
      */
     override void draw() {
-        this.container.window.renderer.copy(this.grass, new iRectangle(0, 0,
-                logicalSize.x, logicalSize.y));
+        foreach (i; 0 .. logicalSize.x / 100) {
+            foreach (j; 0 .. logicalSize.y / 100) {
+                this.container.window.renderer.copy(this.grass, new iRectangle(100 * i, 100 * j, 100, 100));
+            }
+        }
     }
 
 }
