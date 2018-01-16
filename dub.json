@@ -4,9 +4,9 @@
 		"Saurabh Totey"
 	],
 	"dependencies": {
-		"gfm": "~>6.2.12"
+		"d2d": "~>1.3.3"
 	},
-	"description": "A game made to learn/test GFM.",
+	"description": "A game to test the limits of d2d.",
 	"copyright": "Copyright © 2017, Saurabh Totey",
 	"license": "MIT"
 }
