@@ -4,6 +4,8 @@ import std.conv;
 import std.traits;
 import d2d;
 
+immutable logicalSize = new iVector(1600, 900); ///The logical size of the renderer
+
 Font[Fonts] fonts; ///All fonts; array is preloaded so fonts don't need to be needlessly loaded afterwards
 Surface[Images] images; ///All images; array is preloaded so images don't need to be needlessly loaded afterwards
 
