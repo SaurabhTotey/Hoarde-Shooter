@@ -11,7 +11,7 @@ Surface[Images] images; ///All images; array is preloaded so images don't need t
 
 shared static this() {
     foreach (font; EnumMembers!Fonts) {
-        fonts[font] = new Font("res/fonts/" ~ font.to!string ~ ".ttf", 14);
+        fonts[font] = new Font("res/fonts/" ~ font.to!string ~ ".ttf", 1000);
     }
     foreach (image; EnumMembers!Images) {
         images[image] = loadImage("res/images/" ~ image.to!string ~ ".png");

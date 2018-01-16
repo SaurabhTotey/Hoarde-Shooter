@@ -10,3 +10,4 @@ dub.selections.json
 *.exe
 *.lib
 .vscode/
+d2d/
