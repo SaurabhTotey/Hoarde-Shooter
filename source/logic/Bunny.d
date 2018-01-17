@@ -1,5 +1,6 @@
 module logic.Bunny;
 
+import std.math;
 import d2d;
 import graphics.Constants;
 import logic.Entity;
@@ -8,10 +9,11 @@ import logic.Entity;
  * Possible direction commands for moving the bunny
  */
 enum Direction : dVector {
-    UP = new dVector(0, -25),
-    DOWN = new dVector(0, 25),
-    LEFT = new dVector(-25, 0),
-    RIGHT = new dVector(25, 0)
+    UP = new dVector(0, -5),
+    DOWN = new dVector(0, 5),
+    LEFT = new dVector(-5,
+            0),
+    RIGHT = new dVector(5, 0)
 }
 
 /**
@@ -77,11 +79,11 @@ class Bunny : Entity {
 
     /**
      * Rotates the bunny towards the given point
+     * TODO: rotates bunny's top left to face towards point, not center
      */
     void faceTowards(iVector point) {
-        this._rotation = (new dVector(point.x,
-                point.y) - new dVector(this.location.x, this.location.y))
-            .directionAngles.components[0];
+        dVector difference = new dVector(point.x, point.y) - this.location.topLeft;
+        this._rotation = atan2(difference.y, difference.x) + PI / 2;
     }
 
 }

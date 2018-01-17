@@ -1,7 +1,9 @@
 module graphics.views.MainGame;
 
+import core.thread;
 import d2d;
 import graphics.Constants;
+import logic.Bunny;
 import logic.game;
 
 /**
@@ -23,18 +25,35 @@ class MainGame : Screen {
             this.textures[image] = new Texture(surface, this.container.window.renderer);
         }
         this.spinningSong = new Sound!(SoundType.Music)("res/sounds/music/SpinningSong.wav");
+        new Thread({ this.game.run(); }).start();
     }
 
     /**
      * Handles collecting events to send to the game object logic controller
      */
     void handleEvent(SDL_Event event) {
+        if (event.type == SDL_QUIT) {
+            this.game.isRunning = false;
+        }
     }
 
     /**
-     * A method required by Screen; doesn't serve any purpose for the MainGame screen
+     * Because this method gets called periodically and uniformly, sends input data to game in uniform rate
      */
     override void onFrame() {
+        if (this.container.keyboard.allKeys[SDLK_w].isPressed()) {
+            this.game.mainPlayer.move(Direction.UP);
+        }
+        if (this.container.keyboard.allKeys[SDLK_a].isPressed()) {
+            this.game.mainPlayer.move(Direction.LEFT);
+        }
+        if (this.container.keyboard.allKeys[SDLK_s].isPressed()) {
+            this.game.mainPlayer.move(Direction.DOWN);
+        }
+        if (this.container.keyboard.allKeys[SDLK_d].isPressed()) {
+            this.game.mainPlayer.move(Direction.RIGHT);
+        }
+        this.game.mainPlayer.faceTowards(this.container.mouse.location);
     }
 
     /**

@@ -8,7 +8,7 @@ import graphics.Constants;
  */
 abstract class Entity {
 
-    protected bool _isValid; ///Whether the entity is valid; if it isn't, the entity gets marked for deletion
+    protected bool _isValid = true; ///Whether the entity is valid; if it isn't, the entity gets marked for deletion
     protected Images _appearance; ///How the entity looks
     protected double _rotation = 0; ///Where the entity is facing in radians; is only cosmetic
     protected dVector _velocity; ///The entity's velocity
