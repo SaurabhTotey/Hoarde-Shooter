@@ -11,8 +11,8 @@ abstract class Entity {
     protected bool _isValid; ///Whether the entity is valid; if it isn't, the entity gets marked for deletion
     protected Images _appearance; ///How the entity looks
     protected double _rotation = 0; ///Where the entity is facing in radians; is only cosmetic
-    protected iVector _velocity; ///The entity's velocity
-    protected iRectangle _location; ///The entity's location
+    protected dVector _velocity; ///The entity's velocity
+    protected dRectangle _location; ///The entity's location
     protected int _health; ///The entity's health
     protected int _damage; ///How much damage the entity does
 
@@ -44,7 +44,7 @@ abstract class Entity {
      * Returns the velocity of the entity
      * Velocity can only be modified internally; otherwise is read only
      */
-    @property iVector velocity() {
+    @property dVector velocity() {
         return this._velocity;
     }
 
@@ -52,7 +52,7 @@ abstract class Entity {
      * Returns the location of the entity
      * Location can only be modified internally; otherwise is read only
      */
-    @property iRectangle location() {
+    @property dRectangle location() {
         return this._location;
     }
 
