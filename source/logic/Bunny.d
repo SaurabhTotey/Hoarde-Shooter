@@ -21,7 +21,7 @@ enum Direction : dVector {
  */
 class Bunny : Entity {
 
-    private double _maxSpeed = 25; ///The highest speed the bunny will be allowed to go at any given point in time
+    private double _maxSpeed = 10; ///The highest speed the bunny will be allowed to go at any given point in time
 
     /**
      * Returns the maximumum speed of the entity

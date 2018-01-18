@@ -4,16 +4,39 @@ import core.thread;
 import logic.Bunny;
 import logic.Entity;
 
-enum ticksPerSecond = 20; ///How many game logic ticks occur in a second
+enum ticksPerSecond = 30; ///How many game logic ticks occur in a second
 
 /**
  * The actual class that handles running game logic
  */
 class Game {
 
-    bool isRunning; ///Whether the game is running or not
+    private bool _isRunning; ///Whether the game is running or not
     Bunny mainPlayer; ///The main player is the bunny
     Entity[] otherEntities; ///All other entities in the game that aren't the main player are stored here
+
+    /**
+     * Sets whether the game is running; if set to true, starts the game; otherwise, the game will come to a stop
+     * Stopping the game doesn't mean it's done: it can be resumed by setting this to true again if the player is alive
+     */
+    @property void isRunning(bool state) {
+        if (state) {
+            if (!this._isRunning) {
+                this.run();
+            }
+        }
+        else {
+            this._isRunning = false;
+        }
+    }
+
+    /**
+     * Gets whether the game is running
+     * Even if the game is stopped, it can be resumed as long as the player is alive
+     */
+    @property bool isRunning() {
+        return this._isRunning;
+    }
 
     /**
      * Returns a list of all the entities in the game
@@ -32,13 +55,13 @@ class Game {
     /**
      * Actually handles running the game
      */
-    void run() {
-        this.isRunning = true;
-        while (this.isRunning) {
+    private void run() {
+        this._isRunning = true;
+        while (this._isRunning) {
             foreach (entity; this.allEntities) {
                 entity.onTick();
             }
-            this.isRunning = mainPlayer.isValid;
+            this._isRunning = mainPlayer.isValid;
             Thread.sleep(msecs(1000 / ticksPerSecond));
         }
     }

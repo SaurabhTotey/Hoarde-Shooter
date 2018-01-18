@@ -12,8 +12,10 @@ import logic.game;
 class MainGame : Screen {
 
     Game game; ///The actual game object that handles logic and flow
+    Thread gameRunner; ///The thread that actually runs the game
     Texture[Images] textures; ///The textures used by the game
     Sound!(SoundType.Music) spinningSong; ///The game's background music
+    ComponentGroup pauseMenu; ///The components for the game's pause menu
 
     /**
      * Makes a MainGame screen that creates the screen's game and loads all textures and sounds
@@ -25,7 +27,11 @@ class MainGame : Screen {
             this.textures[image] = new Texture(surface, this.container.window.renderer);
         }
         this.spinningSong = new Sound!(SoundType.Music)("res/sounds/music/SpinningSong.wav");
-        new Thread({ this.game.run(); }).start();
+        this.pauseMenu = new ComponentGroup(this.container, [
+
+        ]);
+        this.gameRunner = new Thread({ this.game.isRunning = true; });
+        this.gameRunner.start();
     }
 
     /**
@@ -35,12 +41,24 @@ class MainGame : Screen {
         if (event.type == SDL_QUIT) {
             this.game.isRunning = false;
         }
+        if (this.container.keyboard.allKeys[SDLK_ESCAPE].testAndRelease()) {
+            if (this.game.isRunning) {
+                this.game.isRunning = false;
+                this.components ~= this.pauseMenu;
+            } else {
+                this.components = null;
+                this.gameRunner.start();
+            }
+        }
     }
 
     /**
      * Because this method gets called periodically and uniformly, sends input data to game in uniform rate
      */
     override void onFrame() {
+        if (!this.game.isRunning) {
+            return;
+        }
         if (this.container.keyboard.allKeys[SDLK_w].isPressed()) {
             this.game.mainPlayer.move(Direction.UP);
         }
