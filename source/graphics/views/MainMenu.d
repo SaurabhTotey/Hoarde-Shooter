@@ -18,12 +18,13 @@ class MainMenu : Screen {
     this(Display display) {
         super(display);
         this.grass = new Texture(images[Images.Grass], this.container.window.renderer);
+        //Defines some common constants to use for buttons
+        Color normalBg = PredefinedColor.LIGHTGREY;
+        Color hoverBg = PredefinedColor.GREEN;
         //Defines a component that actually starts the game
         this.components ~= new class Button {
 
             Texture text;
-            Color normalBg = PredefinedColor.LIGHTGREY;
-            Color hoverBg = PredefinedColor.GREEN;
 
             this() {
                 super(display, new iRectangle(100, 400, 1400, 100));
@@ -37,8 +38,50 @@ class MainMenu : Screen {
 
             override void draw() {
                 this.container.window.renderer.fillRect(this.location,
-                        this.isHovered ? this.hoverBg : this.normalBg);
+                        this.isHovered ? hoverBg : normalBg);
                 this.container.window.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
+            }
+        };
+        //Defines a component that opens the config menu
+        this.components ~= new class Button {
+
+            Texture text;
+
+            this() {
+                super(display, new iRectangle(100, 550, 1400, 100));
+                this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options",
+                        PredefinedColor.BLACK), this.container.window.renderer);
+            }
+
+            override void action() {
+                //TODO:
+            }
+
+            override void draw() {
+                this.container.window.renderer.fillRect(this.location,
+                        this.isHovered ? hoverBg : normalBg);
+                this.container.window.renderer.copy(this.text, new iRectangle(600, 550, 400, 100));
+            }
+        };
+        //Defines a component that exits the game
+        this.components ~= new class Button {
+
+            Texture text;
+
+            this() {
+                super(display, new iRectangle(100, 700, 1400, 100));
+                this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit",
+                        PredefinedColor.BLACK), this.container.window.renderer);
+            }
+
+            override void action() {
+                this.container.isRunning = false;
+            }
+
+            override void draw() {
+                this.container.window.renderer.fillRect(this.location,
+                        this.isHovered ? hoverBg : normalBg);
+                this.container.window.renderer.copy(this.text, new iRectangle(700, 700, 200, 100));
             }
         };
     }
@@ -61,7 +104,8 @@ class MainMenu : Screen {
     override void draw() {
         foreach (i; 0 .. logicalSize.x / 100) {
             foreach (j; 0 .. logicalSize.y / 100) {
-                this.container.window.renderer.copy(this.grass, new iRectangle(100 * i, 100 * j, 100, 100));
+                this.container.window.renderer.copy(this.grass,
+                        new iRectangle(100 * i, 100 * j, 100, 100));
             }
         }
     }
