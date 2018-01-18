@@ -11,8 +11,7 @@ import logic.Entity;
 enum Direction : dVector {
     UP = new dVector(0, -5),
     DOWN = new dVector(0, 5),
-    LEFT = new dVector(-5,
-            0),
+    LEFT = new dVector(-5, 0),
     RIGHT = new dVector(5, 0)
 }
 
@@ -79,10 +78,10 @@ class Bunny : Entity {
 
     /**
      * Rotates the bunny towards the given point
-     * TODO: rotates bunny's top left to face towards point, not center
      */
     void faceTowards(iVector point) {
-        dVector difference = new dVector(point.x, point.y) - this.location.topLeft;
+        dVector difference = new dVector(point.x, point.y) - new dVector(
+                this.location.x + 0.5 * this.location.w, this.location.y + 0.5 * this.location.h);
         this._rotation = atan2(difference.y, difference.x) + PI / 2;
     }
 

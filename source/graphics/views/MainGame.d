@@ -84,13 +84,13 @@ class MainGame : Screen {
     void togglePause() {
         if (this.game.isRunning) {
             this.game.isRunning = false;
-            //pause!(SoundType.Music);
+            pause!(SoundType.Music);
             this.components ~= this.pauseMenu;
         }
         else {
             this.components = null;
             this.gameRunner.start();
-            //resume!(SoundType.Music);
+            resume!(SoundType.Music);
         }
     }
 
