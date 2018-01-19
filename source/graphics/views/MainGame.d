@@ -28,8 +28,6 @@ class MainGame : Screen {
             this.textures[image] = new Texture(surface, this.container.window.renderer);
         }
         this.spinningSong = new Sound!(SoundType.Music)("res/sounds/music/SpinningSong.wav");
-        Color normalBg = PredefinedColor.LIGHTGREY;
-        Color hoverBg = PredefinedColor.GREEN;
         this.pauseMenu = new ComponentGroup(this.container, [
             new class Button {
                 Texture text;
@@ -41,7 +39,7 @@ class MainGame : Screen {
                     togglePause();
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered()? hoverBg : normalBg);
+                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
                     this.container.window.renderer.copy(this.text, new iRectangle(500, 200, 600, 100));
                 }
             },
@@ -55,7 +53,7 @@ class MainGame : Screen {
                     //TODO: go to config
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered()? hoverBg : normalBg);
+                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
                     this.container.window.renderer.copy(this.text, new iRectangle(600, 400, 400, 100));
                 }
             },
@@ -69,7 +67,7 @@ class MainGame : Screen {
                     this.container.screen = new MainMenu(this.container);
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered()? hoverBg : normalBg);
+                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
                     this.container.window.renderer.copy(this.text, new iRectangle(700, 600, 200, 100));
                 }
             }

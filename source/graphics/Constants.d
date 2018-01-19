@@ -49,3 +49,6 @@ enum SoundEffects {
 enum SoundMusic {
     SpinningSong
 }
+
+Color normalButtonBg = PredefinedColor.LIGHTGREY; ///The color of buttons
+Color hoverButtonBg = PredefinedColor.GREEN; ///The color of buttons when hovered over

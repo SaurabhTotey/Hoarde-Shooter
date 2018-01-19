@@ -18,9 +18,6 @@ class MainMenu : Screen {
     this(Display display) {
         super(display);
         this.grass = new Texture(images[Images.Grass], this.container.window.renderer);
-        //Defines some common constants to use for buttons
-        Color normalBg = PredefinedColor.LIGHTGREY;
-        Color hoverBg = PredefinedColor.GREEN;
         //Defines a component that actually starts the game
         this.components ~= new class Button {
 
@@ -38,7 +35,7 @@ class MainMenu : Screen {
 
             override void draw() {
                 this.container.window.renderer.fillRect(this.location,
-                        this.isHovered ? hoverBg : normalBg);
+                        this.isHovered() ? hoverButtonBg : normalButtonBg);
                 this.container.window.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
             }
         };
@@ -59,7 +56,7 @@ class MainMenu : Screen {
 
             override void draw() {
                 this.container.window.renderer.fillRect(this.location,
-                        this.isHovered ? hoverBg : normalBg);
+                        this.isHovered() ? hoverButtonBg : normalButtonBg);
                 this.container.window.renderer.copy(this.text, new iRectangle(600, 550, 400, 100));
             }
         };
@@ -80,7 +77,7 @@ class MainMenu : Screen {
 
             override void draw() {
                 this.container.window.renderer.fillRect(this.location,
-                        this.isHovered ? hoverBg : normalBg);
+                        this.isHovered() ? hoverButtonBg : normalButtonBg);
                 this.container.window.renderer.copy(this.text, new iRectangle(700, 700, 200, 100));
             }
         };
