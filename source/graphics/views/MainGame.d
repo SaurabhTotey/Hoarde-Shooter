@@ -4,6 +4,7 @@ import core.thread;
 import d2d;
 import graphics.Constants;
 import graphics.views.MainMenu;
+import graphics.views.OptionsMenu;
 import logic.Bunny;
 import logic.game;
 
@@ -50,7 +51,7 @@ class MainGame : Screen {
                     this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options", PredefinedColor.BLACK), this.container.window.renderer);
                 }
                 override void action() {
-                    //TODO: go to config
+                    this.container.screen = new OptionsMenu(display, this.container.screen);
                 }
                 override void draw() {
                     this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);

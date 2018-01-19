@@ -3,6 +3,7 @@ module graphics.views.MainMenu;
 import d2d;
 import graphics.Constants;
 import graphics.views.MainGame;
+import graphics.views.OptionsMenu;
 
 /**
  * The main menu screen
@@ -51,7 +52,7 @@ class MainMenu : Screen {
             }
 
             override void action() {
-                //TODO:
+                this.container.screen = new OptionsMenu(display, this.container.screen);
             }
 
             override void draw() {
