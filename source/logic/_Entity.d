@@ -8,13 +8,23 @@ import graphics.Constants;
  */
 abstract class Entity {
 
+    private ulong _lifeTime; ///How many ticks the entity has lived
     protected bool _isValid = true; ///Whether the entity is valid; if it isn't, the entity gets marked for deletion
     protected Images _appearance; ///How the entity looks
     protected double _rotation = 0; ///Where the entity is facing in radians; is only cosmetic
     protected dVector _velocity; ///The entity's velocity
     protected dRectangle _location; ///The entity's location
-    protected int _health; ///The entity's health
     protected int _damage; ///How much damage the entity does
+    package Entity[] spawnQueue; ///Anything the entity wants to spawn; will periodically get emptied and placed in the game
+    int health; ///The entity's health
+
+    /**
+     * Returns the liftime of the entity
+     * Lifetime can only be modified internally; otherwise is read only
+     */
+    @property ulong lifeTime() {
+        return this._lifeTime;
+    }
 
     /**
      * Returns the validity of the entity
@@ -57,14 +67,6 @@ abstract class Entity {
     }
 
     /**
-     * Returns the health of the entity
-     * Health can only be modified internally; otherwise is read only
-     */
-    @property int health() {
-        return this._health;
-    }
-
-    /**
      * Returns the damage of the entity
      * Damage can only be modified internally; otherwise is read only
      */
@@ -90,9 +92,11 @@ abstract class Entity {
             this.outOfBoundsAction();
         }
         this.tickAction();
+        this._lifeTime++;
     }
 
     void tickAction(); ///The entity's specific action that it does every tick
     void outOfBoundsAction(); ///How the entity handles going out of bounds
+    void onCollide(Entity other); ///What the entity does when colliding with another entity
 
 }

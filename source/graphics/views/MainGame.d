@@ -125,6 +125,9 @@ class MainGame : Screen {
             this.game.mainPlayer.move(Direction.RIGHT);
         }
         this.game.mainPlayer.faceTowards(this.container.mouse.location);
+        if (this.container.mouse.allButtons[SDL_BUTTON_LEFT].isPressed()) {
+            this.game.mainPlayer.shootBullet(this.container.mouse.location);
+        }
     }
 
     /**

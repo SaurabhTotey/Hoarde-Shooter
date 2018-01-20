@@ -1,5 +1,7 @@
 module logic.game;
 
+import std.algorithm;
+import std.array;
 import core.thread;
 import logic.Bunny;
 import logic.Entity;
@@ -13,7 +15,7 @@ class Game {
 
     private bool _isRunning; ///Whether the game is running or not
     Bunny mainPlayer; ///The main player is the bunny
-    Entity[] otherEntities; ///All other entities in the game that aren't the main player are stored here
+    private Entity[] otherEntities; ///All other entities in the game that aren't the main player are stored here
 
     /**
      * Sets whether the game is running; if set to true, starts the game; otherwise, the game will come to a stop
@@ -61,6 +63,13 @@ class Game {
             foreach (entity; this.allEntities) {
                 entity.onTick();
             }
+            foreach (entity; this.allEntities) {
+                if (entity.spawnQueue.length > 0) {
+                    this.otherEntities = this.otherEntities ~ entity.spawnQueue;
+                    entity.spawnQueue = null;
+                }
+            }
+            this.otherEntities = this.otherEntities.filter!(entity => entity.isValid).array;
             this._isRunning = mainPlayer.isValid;
             Thread.sleep(msecs(1000 / ticksPerSecond));
         }

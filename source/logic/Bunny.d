@@ -3,6 +3,7 @@ module logic.Bunny;
 import std.math;
 import d2d;
 import graphics.Constants;
+import logic.Bullet;
 import logic.Entity;
 
 /**
@@ -37,7 +38,7 @@ class Bunny : Entity {
         this._appearance = Images.DisgustingBunny;
         this._velocity = new dVector(0);
         this._location = new dRectangle(logicalSize.x / 2 - 50, logicalSize.y / 2 - 50, 100, 100);
-        this._health = 100;
+        this.health = 100;
         this._damage = 0;
     }
 
@@ -67,6 +68,12 @@ class Bunny : Entity {
     }
 
     /**
+     * The bunny doesn't do anything special when colliding with other entities
+     */
+    override void onCollide(Entity other) {
+    }
+
+    /**
      * Moves the bunny towards the given direction
      */
     void move(Direction direction) {
@@ -83,6 +90,14 @@ class Bunny : Entity {
         dVector difference = new dVector(point.x, point.y) - new dVector(
                 this.location.x + 0.5 * this.location.w, this.location.y + 0.5 * this.location.h);
         this._rotation = atan2(difference.y, difference.x) + PI / 2;
+    }
+
+    /**
+     * Makes the bunny fire a bullet towards the given point
+     */
+    void shootBullet(iVector towards) {
+        dVector bunnyCenter = new dVector(this.location.x + this.location.w / 2, this.location.y + this.location.h / 2);
+        this.spawnQueue ~= new Bullet(bunnyCenter, new dVector(towards.x, towards.y) - bunnyCenter);
     }
 
 }
