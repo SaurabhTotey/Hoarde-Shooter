@@ -14,7 +14,6 @@ abstract class Entity {
     protected double _rotation = 0; ///Where the entity is facing in radians; is only cosmetic
     protected dVector _velocity; ///The entity's velocity
     protected dRectangle _location; ///The entity's location
-    protected int _damage; ///How much damage the entity does
     package Entity[] spawnQueue; ///Anything the entity wants to spawn; will periodically get emptied and placed in the game
     int health; ///The entity's health
 
@@ -64,14 +63,6 @@ abstract class Entity {
      */
     @property dRectangle location() {
         return this._location;
-    }
-
-    /**
-     * Returns the damage of the entity
-     * Damage can only be modified internally; otherwise is read only
-     */
-    @property int damage() {
-        return this._damage;
     }
 
     /**

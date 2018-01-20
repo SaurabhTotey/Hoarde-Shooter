@@ -1,5 +1,6 @@
 module logic.Bullet;
 
+import std.math;
 import d2d;
 import logic.Entity;
 import graphics.Constants;
@@ -9,24 +10,28 @@ import graphics.Constants;
  */
 class Bullet : Entity {
 
-    private double speed = 15; ///How fast the bullet will travel
+    private Entity immune; ///Which entity is immune to the bullet
+    immutable speed = 30.0; ///How fast the bullet will travel
+    immutable damage = 15; ///How much damage the bullet does
 
     /**
      * Creates a bullet
      */
-    this(dVector startLocation, dVector direction) {
+    this(dVector startLocation, dVector direction, Entity immune) {
+        this.immune = immune;
         this._appearance = Images.Bullet;
         this._velocity = direction;
         this._velocity.magnitude = this.speed;
+        this._rotation = atan2(this.velocity.y, this.velocity.x) + PI / 2;
         this._location = new dRectangle(startLocation.x, startLocation.y, 20, 20);
         this.health = 1;
-        this._damage = 15;
     }
 
     /**
      * Bullets don't do anything special every tick
      */
-    override void tickAction() {}
+    override void tickAction() {
+    }
 
     /**
      * Bullets just become invalidated once they are out of bounds
@@ -39,6 +44,10 @@ class Bullet : Entity {
      * When a bullet collides with another entity, it damages the other entity and then becomes invalid
      */
     override void onCollide(Entity other) {
+        if (other == this.immune || (cast(Bullet) other && (cast(Bullet) other).immune
+                == this.immune)) {
+            return;
+        }
         other.health -= this.damage;
         this._isValid = false;
     }

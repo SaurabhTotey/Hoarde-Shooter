@@ -3,6 +3,7 @@ module logic.game;
 import std.algorithm;
 import std.array;
 import core.thread;
+import d2d;
 import logic.Bunny;
 import logic.Entity;
 
@@ -62,6 +63,10 @@ class Game {
         while (this._isRunning) {
             foreach (entity; this.allEntities) {
                 entity.onTick();
+            }
+            foreach (entity1; this.allEntities) {
+                this.allEntities.filter!(entity2 => intersects(entity1.location,
+                        entity2.location)).each!(entity2 => entity1.onCollide(entity2));
             }
             foreach (entity; this.allEntities) {
                 if (entity.spawnQueue.length > 0) {

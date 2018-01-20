@@ -39,7 +39,6 @@ class Bunny : Entity {
         this._velocity = new dVector(0);
         this._location = new dRectangle(logicalSize.x / 2 - 50, logicalSize.y / 2 - 50, 100, 100);
         this.health = 100;
-        this._damage = 0;
     }
 
     /**
@@ -97,7 +96,7 @@ class Bunny : Entity {
      */
     void shootBullet(iVector towards) {
         dVector bunnyCenter = new dVector(this.location.x + this.location.w / 2, this.location.y + this.location.h / 2);
-        this.spawnQueue ~= new Bullet(bunnyCenter, new dVector(towards.x, towards.y) - bunnyCenter);
+        this.spawnQueue ~= new Bullet(bunnyCenter, new dVector(towards.x, towards.y) - bunnyCenter, this);
     }
 
 }
