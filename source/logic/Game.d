@@ -45,7 +45,7 @@ class Game {
      * Returns a list of all the entities in the game
      */
     @property Entity[] allEntities() {
-        return this.mainPlayer ~ this.otherEntities;
+        return this.otherEntities ~ this.mainPlayer;
     }
 
     /**
