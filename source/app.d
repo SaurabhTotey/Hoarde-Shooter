@@ -11,7 +11,7 @@ void main() {
     mainDisplay = new Display(640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE,
             SDL_RENDERER_ACCELERATED, "Hoarde Shooter!");
     mainDisplay.window.icon = images[Images.DisgustingBunny];
-    mainDisplay.window.renderer.logicalSize = new iVector(logicalSize.x, logicalSize.y);
+    mainDisplay.renderer.logicalSize = new iVector(logicalSize.x, logicalSize.y);
     mainDisplay.eventHandlers ~= new class EventHandler {
         void handleEvent(SDL_Event event) {
             if (mainDisplay.keyboard.allKeys[SDLK_F11].testAndRelease()) {

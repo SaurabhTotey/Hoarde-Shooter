@@ -26,7 +26,7 @@ class MainGame : Screen {
         super(display);
         this.game = new Game();
         foreach (image, surface; images) {
-            this.textures[image] = new Texture(surface, this.container.window.renderer);
+            this.textures[image] = new Texture(surface, this.container.renderer);
         }
         this.spinningSong = new Sound!(SoundType.Music)("res/sounds/music/SpinningSong.wav");
         this.pauseMenu = new ComponentGroup(this.container, [
@@ -34,42 +34,42 @@ class MainGame : Screen {
                 Texture text;
                 this() {
                     super(display, new iRectangle(100, 200, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Resume", PredefinedColor.BLACK), this.container.window.renderer);
+                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Resume", PredefinedColor.BLACK), this.container.renderer);
                 }
                 override void action() {
                     togglePause();
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.window.renderer.copy(this.text, new iRectangle(500, 200, 600, 100));
+                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
+                    this.container.renderer.copy(this.text, new iRectangle(500, 200, 600, 100));
                 }
             },
             new class Button {
                 Texture text;
                 this() {
                     super(display, new iRectangle(100, 400, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options", PredefinedColor.BLACK), this.container.window.renderer);
+                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options", PredefinedColor.BLACK), this.container.renderer);
                 }
                 override void action() {
                     this.container.screen = new OptionsMenu(display, this.container.screen);
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.window.renderer.copy(this.text, new iRectangle(600, 400, 400, 100));
+                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
+                    this.container.renderer.copy(this.text, new iRectangle(600, 400, 400, 100));
                 }
             },
             new class Button {
                 Texture text;
                 this() {
                     super(display, new iRectangle(100, 600, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit", PredefinedColor.BLACK), this.container.window.renderer);
+                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit", PredefinedColor.BLACK), this.container.renderer);
                 }
                 override void action() {
                     this.container.screen = new MainMenu(this.container);
                 }
                 override void draw() {
-                    this.container.window.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.window.renderer.copy(this.text, new iRectangle(700, 600, 200, 100));
+                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
+                    this.container.renderer.copy(this.text, new iRectangle(700, 600, 200, 100));
                 }
             }
         ]);
@@ -136,12 +136,12 @@ class MainGame : Screen {
     override void draw() {
         foreach (i; 0 .. logicalSize.x / 100) {
             foreach (j; 0 .. logicalSize.y / 100) {
-                this.container.window.renderer.copy(this.textures[Images.Grass],
+                this.container.renderer.copy(this.textures[Images.Grass],
                         new iRectangle(100 * i, 100 * j, 100, 100));
             }
         }
         foreach (entity; this.game.allEntities) {
-            this.container.window.renderer.copy(this.textures[entity.appearance],
+            this.container.renderer.copy(this.textures[entity.appearance],
                     new iRectangle(cast(int) entity.location.x,
                         cast(int) entity.location.y, cast(int) entity.location.w,
                         cast(int) entity.location.h), entity.rotation);

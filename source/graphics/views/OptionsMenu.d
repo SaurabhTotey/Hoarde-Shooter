@@ -24,7 +24,7 @@ class OptionsMenu : Screen {
             }
 
             override void draw() {
-                this.container.window.renderer.fillRect(this.location,
+                this.container.renderer.fillRect(this.location,
                         this.isHovered() ? hoverButtonBg : normalButtonBg);
             }
         };

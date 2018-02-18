@@ -18,7 +18,7 @@ class MainMenu : Screen {
      */
     this(Display display) {
         super(display);
-        this.grass = new Texture(images[Images.Grass], this.container.window.renderer);
+        this.grass = new Texture(images[Images.Grass], this.container.renderer);
         //Defines a component that actually starts the game
         this.components ~= new class Button {
 
@@ -27,7 +27,7 @@ class MainMenu : Screen {
             this() {
                 super(display, new iRectangle(100, 400, 1400, 100));
                 this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("New Game",
-                        PredefinedColor.BLACK), this.container.window.renderer);
+                        PredefinedColor.BLACK), this.container.renderer);
             }
 
             override void action() {
@@ -35,9 +35,9 @@ class MainMenu : Screen {
             }
 
             override void draw() {
-                this.container.window.renderer.fillRect(this.location,
+                this.container.renderer.fillRect(this.location,
                         this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.window.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
+                this.container.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
             }
         };
         //Defines a component that opens the config menu
@@ -48,7 +48,7 @@ class MainMenu : Screen {
             this() {
                 super(display, new iRectangle(100, 550, 1400, 100));
                 this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options",
-                        PredefinedColor.BLACK), this.container.window.renderer);
+                        PredefinedColor.BLACK), this.container.renderer);
             }
 
             override void action() {
@@ -56,9 +56,9 @@ class MainMenu : Screen {
             }
 
             override void draw() {
-                this.container.window.renderer.fillRect(this.location,
+                this.container.renderer.fillRect(this.location,
                         this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.window.renderer.copy(this.text, new iRectangle(600, 550, 400, 100));
+                this.container.renderer.copy(this.text, new iRectangle(600, 550, 400, 100));
             }
         };
         //Defines a component that exits the game
@@ -69,7 +69,7 @@ class MainMenu : Screen {
             this() {
                 super(display, new iRectangle(100, 700, 1400, 100));
                 this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit",
-                        PredefinedColor.BLACK), this.container.window.renderer);
+                        PredefinedColor.BLACK), this.container.renderer);
             }
 
             override void action() {
@@ -77,9 +77,9 @@ class MainMenu : Screen {
             }
 
             override void draw() {
-                this.container.window.renderer.fillRect(this.location,
+                this.container.renderer.fillRect(this.location,
                         this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.window.renderer.copy(this.text, new iRectangle(700, 700, 200, 100));
+                this.container.renderer.copy(this.text, new iRectangle(700, 700, 200, 100));
             }
         };
     }
@@ -102,7 +102,7 @@ class MainMenu : Screen {
     override void draw() {
         foreach (i; 0 .. logicalSize.x / 100) {
             foreach (j; 0 .. logicalSize.y / 100) {
-                this.container.window.renderer.copy(this.grass,
+                this.container.renderer.copy(this.grass,
                         new iRectangle(100 * i, 100 * j, 100, 100));
             }
         }
