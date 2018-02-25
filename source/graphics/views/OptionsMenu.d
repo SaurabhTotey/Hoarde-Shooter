@@ -1,6 +1,7 @@
 module graphics.views.OptionsMenu;
 
 import d2d;
+import graphics.components.CoolButton;
 import graphics.Constants;
 
 /**
@@ -13,21 +14,9 @@ class OptionsMenu : Screen {
      */
     this(Display display, Screen previousScreen) {
         super(display);
-        this.components ~= new class Button {
-
-            this() {
-                super(display, new iRectangle(100, 700, 1400, 100));
-            }
-
-            override void action() {
-                this.container.screen = previousScreen;
-            }
-
-            override void draw() {
-                this.container.renderer.fillRect(this.location,
-                        this.isHovered() ? hoverButtonBg : normalButtonBg);
-            }
-        };
+        this.components ~= new CoolButton(display, new iRectangle(100, 700, 1400, 100), "YAY", {
+            this.container.screen = previousScreen;
+        });
     }
 
     /**

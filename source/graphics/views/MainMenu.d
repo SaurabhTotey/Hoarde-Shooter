@@ -1,6 +1,7 @@
 module graphics.views.MainMenu;
 
 import d2d;
+import graphics.components.CoolButton;
 import graphics.Constants;
 import graphics.views.MainGame;
 import graphics.views.OptionsMenu;
@@ -20,68 +21,17 @@ class MainMenu : Screen {
         super(display);
         this.grass = new Texture(images[Images.Grass], this.container.renderer);
         //Defines a component that actually starts the game
-        this.components ~= new class Button {
-
-            Texture text;
-
-            this() {
-                super(display, new iRectangle(100, 400, 1400, 100));
-                this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("New Game",
-                        PredefinedColor.BLACK), this.container.renderer);
-            }
-
-            override void action() {
-                this.container.screen = new MainGame(this.container);
-            }
-
-            override void draw() {
-                this.container.renderer.fillRect(this.location,
-                        this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.renderer.copy(this.text, new iRectangle(500, 400, 600, 100));
-            }
-        };
+        this.components ~= new CoolButton(display, new iRectangle(100, 400, 1400, 100), "New Game", {
+            this.container.screen = new MainGame(this.container);
+        });
         //Defines a component that opens the config menu
-        this.components ~= new class Button {
-
-            Texture text;
-
-            this() {
-                super(display, new iRectangle(100, 550, 1400, 100));
-                this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options",
-                        PredefinedColor.BLACK), this.container.renderer);
-            }
-
-            override void action() {
-                this.container.screen = new OptionsMenu(display, this.container.screen);
-            }
-
-            override void draw() {
-                this.container.renderer.fillRect(this.location,
-                        this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.renderer.copy(this.text, new iRectangle(600, 550, 400, 100));
-            }
-        };
+        this.components ~= new CoolButton(display, new iRectangle(100, 550, 1400, 100), "Options", {
+            this.container.screen = new OptionsMenu(display, this.container.screen);
+        });
         //Defines a component that exits the game
-        this.components ~= new class Button {
-
-            Texture text;
-
-            this() {
-                super(display, new iRectangle(100, 700, 1400, 100));
-                this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit",
-                        PredefinedColor.BLACK), this.container.renderer);
-            }
-
-            override void action() {
-                this.container.isRunning = false;
-            }
-
-            override void draw() {
-                this.container.renderer.fillRect(this.location,
-                        this.isHovered() ? hoverButtonBg : normalButtonBg);
-                this.container.renderer.copy(this.text, new iRectangle(700, 700, 200, 100));
-            }
-        };
+        this.components ~= new CoolButton(display, new iRectangle(100, 700, 1400, 100), "Exit", {
+            this.container.isRunning = false;
+        });
     }
 
     /**

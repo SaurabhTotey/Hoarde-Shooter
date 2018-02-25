@@ -4,7 +4,7 @@
 		"Saurabh Totey"
 	],
 	"dependencies": {
-		"d2d": "~>1.4.8"
+		"d2d": "~>1.4.13"
 	},
 	"description": "A game to test the limits of d2d.",
 	"copyright": "Copyright © 2017, Saurabh Totey",

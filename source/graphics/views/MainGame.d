@@ -2,6 +2,7 @@ module graphics.views.MainGame;
 
 import core.thread;
 import d2d;
+import graphics.components.CoolButton;
 import graphics.Constants;
 import graphics.views.MainMenu;
 import graphics.views.OptionsMenu;
@@ -30,48 +31,13 @@ class MainGame : Screen {
         }
         this.spinningSong = new Sound!(SoundType.Music)("res/sounds/music/SpinningSong.wav");
         this.pauseMenu = new ComponentGroup(this.container, [
-            new class Button {
-                Texture text;
-                this() {
-                    super(display, new iRectangle(100, 200, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Resume", PredefinedColor.BLACK), this.container.renderer);
-                }
-                override void action() {
-                    togglePause();
-                }
-                override void draw() {
-                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.renderer.copy(this.text, new iRectangle(500, 200, 600, 100));
-                }
-            },
-            new class Button {
-                Texture text;
-                this() {
-                    super(display, new iRectangle(100, 400, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Options", PredefinedColor.BLACK), this.container.renderer);
-                }
-                override void action() {
-                    this.container.screen = new OptionsMenu(display, this.container.screen);
-                }
-                override void draw() {
-                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.renderer.copy(this.text, new iRectangle(600, 400, 400, 100));
-                }
-            },
-            new class Button {
-                Texture text;
-                this() {
-                    super(display, new iRectangle(100, 600, 1400, 100));
-                    this.text = new Texture(fonts[Fonts.OpenSans].renderTextBlended("Exit", PredefinedColor.BLACK), this.container.renderer);
-                }
-                override void action() {
-                    this.container.screen = new MainMenu(this.container);
-                }
-                override void draw() {
-                    this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
-                    this.container.renderer.copy(this.text, new iRectangle(700, 600, 200, 100));
-                }
-            }
+            new CoolButton(display, new iRectangle(100, 200, 1400, 100), "Resume", {togglePause();}),
+            new CoolButton(display, new iRectangle(100, 400, 1400, 100), "Options", {
+                this.container.screen = new OptionsMenu(display, this.container.screen);
+            }),
+            new CoolButton(display, new iRectangle(100, 600, 1400, 100), "Exit", {
+                this.container.screen = new MainMenu(this.container);
+            })
         ]);
         this.gameRunner = new Thread({ this.game.isRunning = true; });
         this.gameRunner.start();
