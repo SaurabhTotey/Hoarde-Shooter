@@ -22,7 +22,7 @@ class Bullet : Entity {
         this._appearance = Images.Bullet;
         this._velocity = direction;
         this._velocity.magnitude = this.speed;
-        this._rotation = atan2(this.velocity.y, this.velocity.x) + PI / 2;
+        this._rotation = atan2(direction.y, direction.x) + PI / 2;
         this._location = new dRectangle(startLocation.x, startLocation.y, 20, 20);
         this.health = 1;
     }

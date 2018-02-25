@@ -95,8 +95,7 @@ class Bunny : Entity {
      * Makes the bunny fire a bullet towards the given point
      */
     void shootBullet(iVector towards) {
-        dVector bunnyCenter = new dVector(this.location.x + this.location.w / 2, this.location.y + this.location.h / 2);
-        this.spawnQueue ~= new Bullet(bunnyCenter, new dVector(towards.x, towards.y) - bunnyCenter, this);
+        this.spawnQueue ~= new Bullet(this.location.center, (cast(dVector) towards) - this.location.center, this);
     }
 
 }
