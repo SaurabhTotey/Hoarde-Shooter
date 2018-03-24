@@ -75,11 +75,11 @@ abstract class Entity {
         if (!this._isValid) {
             return;
         }
-        this._location.x += this._velocity.x;
-        this._location.y += this._velocity.y;
-        if (this._location.x < 0
-                || this._location.x + this._location.w > logicalSize.x
-                || this._location.y < 0 || this._location.y + this._location.h > logicalSize.y) {
+        this._location.initialPoint.x += this._velocity.x;
+        this._location.initialPoint.y += this._velocity.y;
+        if (this._location.initialPoint.x < 0
+                || this._location.initialPoint.x + this._location.extent.x > logicalSize.x
+                || this._location.initialPoint.y < 0 || this._location.initialPoint.y + this._location.extent.y > logicalSize.y) {
             this.outOfBoundsAction();
         }
         this.tickAction();

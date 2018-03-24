@@ -12,7 +12,7 @@ import logic.game;
 /**
  * The screen where the actual game is played; stores the game and all of its resources
  */
-class MainGame : Screen {
+class MainGame : Activity {
 
     Game game; ///The actual game object that handles logic and flow
     Thread gameRunner; ///The thread that actually runs the game
@@ -33,10 +33,10 @@ class MainGame : Screen {
         this.pauseMenu = new ComponentGroup(this.container, [
             new CoolButton(display, new iRectangle(100, 200, 1400, 100), "Resume", {togglePause();}),
             new CoolButton(display, new iRectangle(100, 400, 1400, 100), "Options", {
-                this.container.screen = new OptionsMenu(display, this.container.screen);
+                this.container.activity = new OptionsMenu(display, this.container.activity);
             }),
             new CoolButton(display, new iRectangle(100, 600, 1400, 100), "Exit", {
-                this.container.screen = new MainMenu(this.container);
+                this.container.activity = new MainMenu(this.container);
             })
         ]);
         this.gameRunner = new Thread({ this.game.isRunning = true; });
@@ -62,7 +62,7 @@ class MainGame : Screen {
     /**
      * Handles collecting events to send to the game object logic controller
      */
-    void handleEvent(SDL_Event event) {
+    override void handleEvent(SDL_Event event) {
         if (event.type == SDL_QUIT) {
             this.game.isRunning = false;
         }
@@ -74,7 +74,7 @@ class MainGame : Screen {
     /**
      * Because this method gets called periodically and uniformly, sends input data to game in uniform rate
      */
-    override void onFrame() {
+    override void update() {
         if (!this.game.isRunning) {
             return;
         }
@@ -108,9 +108,9 @@ class MainGame : Screen {
         }
         foreach (entity; this.game.allEntities) {
             this.container.renderer.copy(this.textures[entity.appearance],
-                    new iRectangle(cast(int) entity.location.x,
-                        cast(int) entity.location.y, cast(int) entity.location.w,
-                        cast(int) entity.location.h), entity.rotation);
+                    new iRectangle(cast(int) entity.location.initialPoint.x,
+                        cast(int) entity.location.initialPoint.y, cast(int) entity.location.extent.x,
+                        cast(int) entity.location.extent.y), entity.rotation);
         }
     }
 

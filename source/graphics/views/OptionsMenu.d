@@ -7,28 +7,28 @@ import graphics.Constants;
 /**
  * The options menu where the user can change settings
  */
-class OptionsMenu : Screen {
+class OptionsMenu : Activity {
 
     /**
      * Creates an OptionsMenu and sets all the buttons
      */
-    this(Display display, Screen previousScreen) {
+    this(Display display, Activity previousScreen) {
         super(display);
         this.components ~= new CoolButton(display, new iRectangle(100, 700, 1400, 100), "YAY", {
-            this.container.screen = previousScreen;
+            this.container.activity = previousScreen;
         });
     }
 
     /**
      * Options menus don't do anything special with events
      */
-    void handleEvent(SDL_Event event) {
+    override void handleEvent(SDL_Event event) {
     }
 
     /**
      * Options menus don't do anything special every frame
      */
-    override void onFrame() {
+    override void update() {
     }
 
     /**

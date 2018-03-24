@@ -13,13 +13,13 @@ void main() {
     mainDisplay.window.icon = images[Images.DisgustingBunny];
     mainDisplay.renderer.logicalSize = new iVector(logicalSize.x, logicalSize.y);
     mainDisplay.eventHandlers ~= new class EventHandler {
-        void handleEvent(SDL_Event event) {
+        override void handleEvent(SDL_Event event) {
             if (mainDisplay.keyboard.allKeys[SDLK_F11].testAndRelease()) {
                 SDL_SetWindowFullscreen(mainDisplay.window.handle(), mainDisplay.window.info()
                         .canFind(SDL_WINDOW_FULLSCREEN_DESKTOP) ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
             }
         }
     };
-    mainDisplay.screen = new MainMenu(mainDisplay);
+    mainDisplay.activity = new MainMenu(mainDisplay);
     mainDisplay.run();
 }

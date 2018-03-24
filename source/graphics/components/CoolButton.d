@@ -18,7 +18,7 @@ class CoolButton : Button {
      */
     this(Display d, iRectangle loc, string text, void delegate() execute) {
         super(d, loc);
-        this.text = new Texture(scaled(fonts[Fonts.OpenSans].renderTextBlended(text, PredefinedColor.BLACK), loc.dimensions), d.renderer);
+        this.text = new Texture(scaled(fonts[Fonts.OpenSans].renderTextBlended(text, PredefinedColor.BLACK), loc.extent.x, loc.extent.y), d.renderer);
         this.execute = execute;
     }
 
@@ -33,7 +33,7 @@ class CoolButton : Button {
      * Draws the button; button will be different colors based on whether it is hovered or not
      */
     override void draw() {
-        this.container.renderer.fillRect(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
+        this.container.renderer.fill(this.location, this.isHovered() ? hoverButtonBg : normalButtonBg);
         this.container.renderer.copy(this.text, this.location);
     }
 

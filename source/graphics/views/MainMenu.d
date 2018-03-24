@@ -10,7 +10,7 @@ import graphics.views.OptionsMenu;
  * The main menu screen
  * Just a hub to go to other screens
  */
-class MainMenu : Screen {
+class MainMenu : Activity {
 
     Texture grass; //Defines the grass texture that is just the background
 
@@ -22,11 +22,11 @@ class MainMenu : Screen {
         this.grass = new Texture(images[Images.Grass], this.container.renderer);
         //Defines a component that actually starts the game
         this.components ~= new CoolButton(display, new iRectangle(100, 400, 1400, 100), "New Game", {
-            this.container.screen = new MainGame(this.container);
+            this.container.activity = new MainGame(this.container);
         });
         //Defines a component that opens the config menu
         this.components ~= new CoolButton(display, new iRectangle(100, 550, 1400, 100), "Options", {
-            this.container.screen = new OptionsMenu(display, this.container.screen);
+            this.container.activity = new OptionsMenu(display, this.container.activity);
         });
         //Defines a component that exits the game
         this.components ~= new CoolButton(display, new iRectangle(100, 700, 1400, 100), "Exit", {
@@ -37,13 +37,13 @@ class MainMenu : Screen {
     /**
      * This screen on its own doesn't do anything to respond to events
      */
-    void handleEvent(SDL_Event event) {
+    override void handleEvent(SDL_Event event) {
     }
 
     /**
      * This screen on its own doesn't do anything special in between frames
      */
-    override void onFrame() {
+    override void update() {
     }
 
     /**

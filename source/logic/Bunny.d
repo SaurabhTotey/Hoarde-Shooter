@@ -52,17 +52,17 @@ class Bunny : Entity {
      * When the bunny goes out of bounds, it gets shifted back such that it is in bounds
      */
     override void outOfBoundsAction() {
-        if (this._location.x < 0) {
-            this._location.x = 0;
+        if (this._location.initialPoint.x < 0) {
+            this._location.initialPoint.x = 0;
         }
-        if (this._location.x + this._location.w > logicalSize.x) {
-            this._location.x = logicalSize.x - this._location.w;
+        if (this._location.initialPoint.x + this._location.extent.x > logicalSize.x) {
+            this._location.initialPoint.x = logicalSize.x - this._location.extent.x;
         }
-        if (this._location.y < 0) {
-            this._location.y = 0;
+        if (this._location.initialPoint.y < 0) {
+            this._location.initialPoint.y = 0;
         }
-        if (this._location.y + this._location.h > logicalSize.y) {
-            this._location.y = logicalSize.y - this._location.h;
+        if (this._location.initialPoint.y + this._location.extent.y > logicalSize.y) {
+            this._location.initialPoint.y = logicalSize.y - this._location.extent.y;
         }
     }
 
@@ -87,7 +87,7 @@ class Bunny : Entity {
      */
     void faceTowards(iVector point) {
         dVector difference = new dVector(point.x, point.y) - new dVector(
-                this.location.x + 0.5 * this.location.w, this.location.y + 0.5 * this.location.h);
+                this.location.initialPoint.x + 0.5 * this.location.extent.x, this.location.initialPoint.y + 0.5 * this.location.extent.y);
         this._rotation = atan2(difference.y, difference.x) + PI / 2;
     }
 
