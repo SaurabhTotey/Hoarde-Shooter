@@ -2,7 +2,6 @@ module logic.game;
 
 import std.algorithm;
 import std.array;
-import std.parallelism;
 import core.thread;
 import d2d;
 import logic.Bunny;
@@ -62,17 +61,14 @@ class Game {
     private void run() {
         this._isRunning = true;
         while (this._isRunning) {
-            foreach (entity; this.allEntities.parallel) {
+            foreach (entity; this.allEntities) {
                 entity.onTick();
             }
-            foreach (entity1; this.allEntities.parallel) {
-                foreach (entity2; this.allEntities.parallel) {
-                    if (intersects!(dRectangle, dRectangle)(entity1.location, entity2.location)) {
-                        entity1.onCollide(entity2);
-                    }
-                }
+            foreach (entity1; this.allEntities) {
+                this.allEntities.filter!(entity2 => intersects(entity1.location,
+                        entity2.location)).each!(entity2 => entity1.onCollide(entity2));
             }
-            foreach (entity; this.allEntities.parallel) {
+            foreach (entity; this.allEntities) {
                 if (entity.spawnQueue.length > 0) {
                     this.otherEntities = this.otherEntities ~ entity.spawnQueue;
                     entity.spawnQueue = null;
