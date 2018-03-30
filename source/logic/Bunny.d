@@ -22,6 +22,8 @@ enum Direction : dVector {
 class Bunny : Entity {
 
     private double _maxSpeed = 10; ///The highest speed the bunny will be allowed to go at any given point in time
+    private int bulletTimeout = 10; ///The timeout in game ticks for how long the player must wait in between bullet shots
+    private int currentBulletWaitPeriod; ///How long the bunny must wait in game ticks at this moment before shooting another bullet
 
     /**
      * Returns the maximumum speed of the entity
@@ -46,6 +48,7 @@ class Bunny : Entity {
      */
     override void tickAction() {
         this._velocity = 0;
+        this.currentBulletWaitPeriod--;
     }
 
     /**
@@ -95,7 +98,11 @@ class Bunny : Entity {
      * Makes the bunny fire a bullet towards the given point
      */
     void shootBullet(iVector towards) {
+        if (this.currentBulletWaitPeriod > 0) {
+            return;
+        }
         this.spawnQueue ~= new Bullet(this.location.center, (cast(dVector) towards) - this.location.center, this);
+        this.currentBulletWaitPeriod = this.bulletTimeout;
     }
 
 }
