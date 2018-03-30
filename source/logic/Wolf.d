@@ -32,7 +32,7 @@ class Wolf : Entity {
     override void tickAction() {
         this._velocity = this.game.mainPlayer.location.center - this.location.center;
         this._velocity.magnitude = this.difficulty;
-        this._rotation = atan2(this._velocity.y, this._velocity.x);
+        this._rotation = atan2(this._velocity.y, this._velocity.x) + PI / 2;
     }
 
     /**
@@ -48,7 +48,7 @@ class Wolf : Entity {
         if (!cast(Bunny) other) {
             return;
         }
-        other.health -= this.difficulty;
+        other.health -= this.difficulty / 5;
     }
 
 }
