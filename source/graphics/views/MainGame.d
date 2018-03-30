@@ -1,5 +1,6 @@
 module graphics.views.MainGame;
 
+import std.algorithm;
 import core.thread;
 import d2d;
 import graphics.components.CoolButton;
@@ -19,6 +20,7 @@ class MainGame : Activity {
     Texture[Images] textures; ///The textures used by the game
     Sound!(SoundType.Music) spinningSong; ///The game's background music
     ComponentGroup pauseMenu; ///The components for the game's pause menu
+    ComponentGroup endMenu; ///THe components that show for the game's end
 
     /**
      * Makes a MainGame screen that creates the screen's game and loads all textures and sounds
@@ -39,6 +41,11 @@ class MainGame : Activity {
                 this.container.activity = new MainMenu(this.container);
             })
         ]);
+        this.endMenu = new ComponentGroup(this.container, [
+            new CoolButton(display, new iRectangle(100, 600, 1400, 100), "Exit", {
+                this.container.activity = new MainMenu(this.container);
+            })
+        ]);
         this.gameRunner = new Thread({ this.game.isRunning = true; });
         this.gameRunner.start();
     }
@@ -47,6 +54,13 @@ class MainGame : Activity {
      * Handles toggling game pause procedure
      */
     void togglePause() {
+        if (!this.game.mainPlayer.isValid) {
+            pause!(SoundType.Music);
+            if (this.components.canFind(this.pauseMenu)) {
+                this.components.remove(this.components.countUntil(this.pauseMenu));
+            }
+            return;
+        }
         if (this.game.isRunning) {
             this.game.isRunning = false;
             pause!(SoundType.Music);
@@ -76,6 +90,10 @@ class MainGame : Activity {
      */
     override void update() {
         if (!this.game.isRunning) {
+            if (!this.game.mainPlayer.isValid) {
+                this.components ~= this.endMenu;
+                pause!(SoundType.Music);
+            }
             return;
         }
         if (this.container.keyboard.allKeys[SDLK_w].isPressed()) {
