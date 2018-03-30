@@ -1,9 +1,11 @@
 module logic.Wolf;
 
+import std.math;
 import d2d;
 import graphics.Constants;
 import logic.Bunny;
 import logic.Entity;
+import logic.Game;
 
 /**
  * The wolf is the entity in the game that serves as the main enemy
@@ -15,10 +17,12 @@ class Wolf : Entity {
     /**
      * Initializes wolf properties
      */
-    this(dVector location, int difficulty) {
+    this(Game container, dVector location, int difficulty) {
+        super(container);
         this._appearance = Images.DisgustingWolf;
         this._velocity = new dVector(0);
         this._location = new dRectangle(location, new dVector(100, 100) + difficulty);
+        this.health = difficulty;
         this.difficulty = difficulty;
     }
 
@@ -26,7 +30,9 @@ class Wolf : Entity {
      * Every tick, the wolf tries to go towards the main player
      */
     override void tickAction() {
-        //TODO: make
+        this._velocity = this.game.mainPlayer.location.center - this.location.center;
+        this._velocity.magnitude = this.difficulty;
+        this._rotation = atan2(this._velocity.y, this._velocity.x);
     }
 
     /**

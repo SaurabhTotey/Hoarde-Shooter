@@ -7,7 +7,7 @@ import graphics.Constants;
 import graphics.views.MainMenu;
 import graphics.views.OptionsMenu;
 import logic.Bunny;
-import logic.game;
+import logic.Game;
 
 /**
  * The screen where the actual game is played; stores the game and all of its resources

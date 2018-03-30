@@ -3,6 +3,7 @@ module logic.Bullet;
 import std.math;
 import d2d;
 import logic.Entity;
+import logic.Game;
 import graphics.Constants;
 
 /**
@@ -12,12 +13,13 @@ class Bullet : Entity {
 
     private Entity immune; ///Which entity is immune to the bullet
     immutable speed = 30.0; ///How fast the bullet will travel
-    immutable damage = 15; ///How much damage the bullet does
+    immutable damage = 10; ///How much damage the bullet does
 
     /**
      * Creates a bullet
      */
-    this(dVector startLocation, dVector direction, Entity immune) {
+    this(Game container, dVector startLocation, dVector direction, Entity immune) {
+        super(container);
         this.immune = immune;
         this._appearance = Images.Bullet;
         this._velocity = direction;

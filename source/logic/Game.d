@@ -1,4 +1,4 @@
-module logic.game;
+module logic.Game;
 
 import std.algorithm;
 import std.array;
@@ -6,6 +6,7 @@ import core.thread;
 import d2d;
 import logic.Bunny;
 import logic.Entity;
+import logic.Wolf;
 
 enum ticksPerSecond = 30; ///How many game logic ticks occur in a second
 
@@ -24,7 +25,7 @@ class Game {
      */
     @property void isRunning(bool state) {
         if (state) {
-            if (!this._isRunning) {
+            if (!this._isRunning && this.mainPlayer.isValid) {
                 this.run();
             }
         }
@@ -52,7 +53,8 @@ class Game {
      * Constructs a game and makes the player
      */
     this() {
-        this.mainPlayer = new Bunny();
+        this.mainPlayer = new Bunny(this);
+        this.otherEntities ~= new Wolf(this, new dVector(0, 0), 15);
     }
 
     /**

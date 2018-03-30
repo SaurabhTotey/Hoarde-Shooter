@@ -5,6 +5,7 @@ import d2d;
 import graphics.Constants;
 import logic.Bullet;
 import logic.Entity;
+import logic.Game;
 
 /**
  * Possible direction commands for moving the bunny
@@ -36,7 +37,8 @@ class Bunny : Entity {
     /**
      * Making a bunny sets all of its fields to their defaults
      */
-    this() {
+    this(Game container) {
+        super(container);
         this._appearance = Images.DisgustingBunny;
         this._velocity = new dVector(0);
         this._location = new dRectangle(logicalSize.x / 2 - 50, logicalSize.y / 2 - 50, 100, 100);
@@ -101,7 +103,7 @@ class Bunny : Entity {
         if (this.currentBulletWaitPeriod > 0) {
             return;
         }
-        this.spawnQueue ~= new Bullet(this.location.center, (cast(dVector) towards) - this.location.center, this);
+        this.spawnQueue ~= new Bullet(this.game, this.location.center, (cast(dVector) towards) - this.location.center, this);
         this.currentBulletWaitPeriod = this.bulletTimeout;
     }
 

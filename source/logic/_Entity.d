@@ -2,12 +2,14 @@ module logic.Entity;
 
 import d2d;
 import graphics.Constants;
+import logic.Game;
 
 /**
  * Defines what all objects in the game should be like
  */
 abstract class Entity {
 
+    protected Game game; ///The game that this entity exists within
     private ulong _lifeTime; ///How many ticks the entity has lived
     protected bool _isValid = true; ///Whether the entity is valid; if it isn't, the entity gets marked for deletion
     protected Images _appearance; ///How the entity looks
@@ -16,6 +18,13 @@ abstract class Entity {
     protected dRectangle _location; ///The entity's location
     package Entity[] spawnQueue; ///Anything the entity wants to spawn; will periodically get emptied and placed in the game
     int health; ///The entity's health
+
+    /**
+     * All entities must take in the game that they are contained in
+     */
+    this(Game container) {
+        this.game = container;
+    }
 
     /**
      * Returns the liftime of the entity
