@@ -6,6 +6,7 @@ import core.thread;
 import d2d;
 import logic.Bunny;
 import logic.Entity;
+import logic.Event;
 import logic.Wolf;
 
 enum ticksPerSecond = 30; ///How many game logic ticks occur in a second
@@ -18,6 +19,7 @@ class Game {
     private bool _isRunning; ///Whether the game is running or not
     Bunny mainPlayer; ///The main player is the bunny
     private Entity[] otherEntities; ///All other entities in the game that aren't the main player are stored here
+    private Event[] _allEvents; ///All the game events that happened over the duration of the game
 
     /**
      * Sets whether the game is running; if set to true, starts the game; otherwise, the game will come to a stop
@@ -47,6 +49,20 @@ class Game {
      */
     @property Entity[] allEntities() {
         return this.otherEntities ~ this.mainPlayer;
+    }
+
+    /**
+     * Returns the list of all of the game events
+     */
+    @property Event[] allEvents() {
+        return this._allEvents;
+    }
+
+    /**
+     * Returns all unchecked game events
+     */
+    @property Event[] currentEvents() {
+        return this._allEvents.filter!(event => !event.consumed).array;
     }
 
     /**
@@ -80,6 +96,21 @@ class Game {
             this._isRunning = mainPlayer.isValid;
             Thread.sleep(msecs(1000 / ticksPerSecond));
         }
+    }
+
+    /**
+     * Sends the game an event; doesn't cause anything to happen, just gives the game a description of what is happening
+     * All this method does is add the event to allEvents
+     */
+    void sendEvent(Event e) {
+        this._allEvents ~= e;
+    }
+
+    /**
+     * Marks the given event as consumed
+     */
+    void consumeEvent(Event e) {
+        this._allEvents.filter!(event => event == e).front.consumed = true;
     }
 
 }

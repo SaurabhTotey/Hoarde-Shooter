@@ -3,6 +3,7 @@ module logic.Bullet;
 import std.math;
 import d2d;
 import logic.Entity;
+import logic.Event;
 import logic.Game;
 import graphics.Constants;
 
@@ -27,6 +28,7 @@ class Bullet : Entity {
         this._rotation = atan2(direction.y, direction.x) + PI / 2;
         this._location = new dRectangle(startLocation.x, startLocation.y, 20, 20);
         this.health = 1;
+        this.sendEvent(Event("BULLET FIRED", "Bullet fired by " ~ immune.toString()));
     }
 
     /**

@@ -112,6 +112,12 @@ class MainGame : Activity {
         if (this.container.mouse.allButtons[SDL_BUTTON_LEFT].isPressed()) {
             this.game.mainPlayer.shootBullet(this.container.mouse.location);
         }
+        foreach (event; this.game.currentEvents) {
+            if (event.tag == "BULLET FIRED") {
+                this.game.consumeEvent(event);
+                new Sound!(SoundType.Chunk)("res/sounds/effects/Clap.wav");
+            }
+        }
     }
 
     /**

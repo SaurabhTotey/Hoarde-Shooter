@@ -2,6 +2,7 @@ module logic.Entity;
 
 import d2d;
 import graphics.Constants;
+import logic.Event;
 import logic.Game;
 
 /**
@@ -93,6 +94,13 @@ abstract class Entity {
         }
         this.tickAction();
         this._lifeTime++;
+    }
+
+    /**
+     * Sends an event to the game
+     */
+    void sendEvent(Event e) {
+        this.game.sendEvent(e);
     }
 
     void tickAction(); ///The entity's specific action that it does every tick

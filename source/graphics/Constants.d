@@ -40,7 +40,7 @@ enum Images {
  * All sound effects that show up in the game
  */
 enum SoundEffects {
-    NONE
+    Clap
 }
 
 /**
