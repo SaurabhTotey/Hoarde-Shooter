@@ -16,6 +16,8 @@ enum ticksPerSecond = 30; ///How many game logic ticks occur in a second
  */
 class Game {
 
+    int difficulty; ///How current difficulty or hardness the game is
+    int _totalDifficulty; ///How hard the game has been in total
     private bool _isRunning; ///Whether the game is running or not
     Bunny mainPlayer; ///The main player is the bunny
     private Entity[] otherEntities; ///All other entities in the game that aren't the main player are stored here
@@ -70,7 +72,8 @@ class Game {
      */
     this() {
         this.mainPlayer = new Bunny(this);
-        this.otherEntities ~= new Wolf(this, new dVector(0, 0), 15);
+        this._totalDifficulty = 15;
+        this.otherEntities ~= new Wolf(this, new dVector(0, 0), this._totalDifficulty);
     }
 
     /**
@@ -93,6 +96,11 @@ class Game {
                 }
             }
             this.otherEntities = this.otherEntities.filter!(entity => entity.isValid).array;
+            this._totalDifficulty += this.difficulty;
+            foreach(i; 0 .. this.difficulty) {
+                this.otherEntities = this.otherEntities ~ new Wolf(this, new dVector(0, 0), this._totalDifficulty);
+            }
+            this.difficulty = 0;
             this._isRunning = mainPlayer.isValid;
             Thread.sleep(msecs(1000 / ticksPerSecond));
         }

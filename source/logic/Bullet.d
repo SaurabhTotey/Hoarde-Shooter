@@ -53,6 +53,9 @@ class Bullet : Entity {
             return;
         }
         other.health -= this.damage;
+        if (other.health < 0) {
+            this.game.difficulty++;
+        }
         this._isValid = false;
     }
 
